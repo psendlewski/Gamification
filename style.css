@@ -13,10 +13,10 @@ body {
 #container {
   position: absolute;
   width: 900px;
-  height: 600px;
+  height: 800px;
   border: 5px solid black;
   background-color: black;
-  border-radius: 50px;
+  border-radius: 20px;
   box-shadow: 20px 20px 20px black;
 }
 
@@ -25,7 +25,7 @@ body {
   width: 900px;
   height: 260px;
   border: 1px solid black;
-  border-radius: 50px 50px 10px 10px;
+  border-radius: 20px 20px 10px 10px;
   box-shadow: 5px 5px 5px #252525;
   background-color: #111111;
   color: orangered;
@@ -34,7 +34,7 @@ body {
 #header1 table {
   position: absolute;
   top: 60px;
-  left: 25px;
+  left: 15px;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-size: 30px;
   text-align: left;
@@ -46,23 +46,23 @@ body {
 #header1 #tab2 {
   position: absolute;
   top: 60px;
-  left: 190px;
+  left: 180px;
   font-size: 30px;
   color: rgba(255, 145, 0, 0.897);
 }
 #header1 #tab3 {
   position: absolute;
   top: 60px;
-  left: 580px;
+  left: 570px;
   font-size: 30px;
   color: rgba(255, 145, 0, 0.897);
 }
 #header1 #tab4 {
   position: absolute;
   top: 60px;
-  left: 720px;
+  left: 840px;
   font-size: 30px;
-  color: rgba(255, 145, 0, 0.897);
+  color: rgba(245, 245, 245, 0.897);
 }
 th,
 td {
@@ -70,19 +70,10 @@ td {
   padding: 15px 0px;
 }
 
-#btn-container {
-  position: absolute;
-  width: 900px;
-  height: 320px;
-  top: 280px;
-  border-radius: 10px 10px 50px 50px;
-  box-shadow: 5px 5px 5px #252525;
-  background-color: #111111;
-}
 #progress-background {
   position: absolute;
-  top: 20px;
-  left: 350px;
+  top: 30px;
+  left: 50px;
   height: 30px;
   width: 200px;
   background: rgb(255, 247, 26);
@@ -98,8 +89,8 @@ td {
 #progress-bar {
   display: inline-block;
   position: absolute;
-  top: 20px;
-  left: 350px;
+  top: 30px;
+  left: 50px;
   height: 30px;
   width: 100px;
   background: rgb(255, 126, 0);
@@ -127,14 +118,20 @@ td {
   justify-content: flex-start;
   align-items: center;
   position: absolute;
-  top: 60px;
+  top: 50px;
   left: 350px;
-  background-color: #000000;
+  background: rgb(55, 55, 55);
+  background: linear-gradient(
+    141deg,
+    rgba(55, 55, 55, 1) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
   width: 200px;
   height: 180px;
   border-radius: 10px;
   margin: 0;
   padding: 0;
+  box-shadow: 10px 10px 10px black;
 }
 
 #income img {
@@ -154,10 +151,10 @@ td {
 }
 #upgrade-btn {
   position: absolute;
-  top: 80px;
-  left: 275px;
-  width: 50px;
-  height: 50px;
+  top: 90px;
+  left: 255px;
+  width: 80px;
+  height: 80px;
   background: rgb(218, 165, 32);
   background: linear-gradient(
     141deg,
@@ -167,6 +164,130 @@ td {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   border-radius: 10px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 30px;
   font-weight: 1000;
+  box-shadow: 5px 5px 5px black;
+}
+
+#ft-btn-down {
+  position: absolute;
+  top: 80px;
+  left: 720px;
+}
+#ft-btn-up {
+  position: absolute;
+  top: 80px;
+  left: 780px;
+}
+#s-btn-down {
+  position: absolute;
+  top: 150px;
+  left: 720px;
+}
+#s-btn-up {
+  position: absolute;
+  top: 150px;
+  left: 780px;
+}
+
+.up {
+  background: rgb(46, 204, 64);
+  background: linear-gradient(
+    141deg,
+    rgba(46, 204, 64, 1) 0%,
+    rgba(25, 97, 33, 1) 100%
+  );
+  width: 40px;
+  height: 40px;
+  border-radius: 7px;
+  box-shadow: 5px 5px 5px black;
+  font-size: 30px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.down {
+  background: rgb(255, 65, 54);
+  background: linear-gradient(
+    141deg,
+    rgba(255, 65, 54, 1) 0%,
+    rgba(116, 30, 25, 1) 100%
+  );
+  width: 40px;
+  height: 40px;
+  border-radius: 7px;
+  box-shadow: 5px 5px 5px black;
+  font-size: 30px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#save-btn {
+  background: rgb(65, 65, 65);
+  background: linear-gradient(
+    141deg,
+    rgba(65, 65, 65, 1) 0%,
+    rgba(17, 17, 17, 1) 100%
+  );
+  width: 100px;
+  height: 32px;
+  border-radius: 7px;
+  box-shadow: 5px 5px 5px black;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 223px;
+  left: 720px;
+  cursor: pointer;
+}
+
+#cal-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: center;
+  position: absolute;
+  width: 900px;
+  height: 520px;
+  top: 280px;
+  border-radius: 10px 10px 20px 20px;
+  box-shadow: 5px 5px 5px #252525;
+  background-color: #111111;
+  z-index: 1;
+  color: aliceblue;
+}
+
+.cal-day {
+  width: 120px;
+  height: 75px;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px #000000;
+}
+.act-day {
+  width: 120px;
+  height: 75px;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgb(218, 144, 32);
+}
+.inact-day {
+  width: 120px;
+  height: 75px;
+  text-align: center;
+  border-radius: 5px;
+  box-shadow: 0px 0px 2px rgb(0, 0, 0);
+  color: #111111;
+}
+#weekdays {
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+.weekdays {
+  width: 130px;
+  height: 30px;
 }
