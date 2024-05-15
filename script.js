@@ -12,7 +12,7 @@ const sBtnDownEl = document.querySelector("#s-btn-down");
 const dayEl = document.querySelector("#day");
 const monthEl = document.querySelector("#month");
 
-const dayNumbersEl = document.querySelector("#dayNumbers");
+const dayNumbersEl = document.querySelector("#day-numbers");
 
 let freeTime = 0;
 let studying = 0;
@@ -27,7 +27,7 @@ ftBtnDownEl.addEventListener("click", () => {
   freeTimeEl.textContent = freeTime;
 });
 sBtnUpEl.addEventListener("click", () => {
-  studying++;
+  if (studying < freeTime) studying++;
   studyingEl.textContent = studying;
 });
 sBtnDownEl.addEventListener("click", () => {
@@ -49,7 +49,7 @@ let firstDayofAMonth;
 let skipFirstDays;
 let skipLastDays;
 
-const currentDayEl = document.querySelector(dayNrId);
+let currentDayEl;
 
 // Function to fetch data from API
 
@@ -167,8 +167,6 @@ function fetchData() {
 
       firstDayofAMonth = getFirstDayOfMonth(dayOfAWeekNr, dayNr);
 
-      console.log("First Day of the Month:", firstDayofAMonth); // Output: 3
-
       // Days in the Month
       function getDaysInMonth(year, month) {
         // JavaScript months are 0-based (January is 0, February is 1, etc.)
@@ -184,7 +182,6 @@ function fetchData() {
       firstDayofAMonth;
       skipFirstDays = firstDayofAMonth > 1 ? firstDayofAMonth - 1 : 7;
       skipLastDays = 35 - skipFirstDays - daysInMonth;
-      console.log(firstDayofAMonth, skipFirstDays, skipLastDays);
 
       let dayCounter = 0;
       // Building the Calendar
@@ -196,7 +193,6 @@ function fetchData() {
           inactiveDay.classList.add("inact-day");
           inactiveDay.setAttribute("id", `d${dayCounter}`);
           dayNumbersEl.appendChild(inactiveDay);
-          console.log(`Created Inactive day Nr ${dayCounter}`);
         }
       }
       // Calendar days
@@ -207,7 +203,6 @@ function fetchData() {
         calDay.setAttribute("id", `d${dayCounter}`);
         calDay.textContent = `${i + 1}`;
         dayNumbersEl.appendChild(calDay);
-        console.log(`Created Calendar day Nr ${dayCounter}`);
       }
       // Skip last days
       for (let i = 0; i < skipLastDays; i++) {
@@ -216,14 +211,12 @@ function fetchData() {
         inactDay.classList.add("inact-day");
         inactDay.setAttribute("id", `d${dayCounter}`);
         dayNumbersEl.appendChild(inactDay);
-        console.log(`Created Calendar day Nr ${dayCounter}`);
       }
       // light up a current day
       //**************************************** */
-      dayNrId = `#d${dayNr}`;
+      dayNrId = `#d${dayNr + skipFirstDays}`;
+      currentDayEl = document.querySelector(dayNrId);
       currentDayEl.classList.add("act-day");
-      console.log(dayNrId);
-      console.log(currentDayEl);
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
@@ -232,13 +225,98 @@ function fetchData() {
 
 fetchData();
 
+// Add FreeTime & Studying to current day
+let saveBtnEl = document.querySelector("#save-btn");
+saveBtnEl.addEventListener("click", () => {
+  let productivityColor;
+  let productivity =
+    studying && freeTime ? ((studying / freeTime) * 100).toFixed(0) : 0;
+  if (studying / freeTime < 0.5) {
+    productivityColor = "red";
+  } else if (studying / freeTime < 0.6) {
+    productivityColor = "orange";
+  } else if (studying / freeTime < 0.7) {
+    productivityColor = "yellow";
+  } else {
+    productivityColor = "green";
+  }
+  currentDayEl;
+  if (currentDayEl.firstChild) currentDayEl.firstChild.remove();
+  if (currentDayEl.firstChild) currentDayEl.firstChild.remove();
+  if (currentDayEl.firstChild) currentDayEl.firstChild.remove();
+
+  currentDayEl.innerText = dayNr;
+  let ft = document.createElement("p");
+  ft.innerHTML = `FT: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ${freeTime}h`;
+  let s = document.createElement("p");
+  s.innerHTML = `S: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  ${studying}h`;
+  let p = document.createElement("p");
+  p.innerHTML = `P: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  ${productivity}%`;
+  currentDayEl.appendChild(ft);
+  currentDayEl.appendChild(s);
+  currentDayEl.appendChild(p);
+  currentDayEl.classList.remove("red", "orange", "yellow", "green");
+  currentDayEl.classList.add(productivityColor);
+});
+
 // Money Counter
 const balanceEl = document.querySelector("#balance");
-let balance = 215.36;
+
+let monthDays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+const currentDate = new Date();
+
+let balance;
+if (!balance)
+  balance = setTimeout(
+    () => parseInt(prompt("Enter a starting balance")),
+    2000
+  );
 let passiveIncome = 1;
+let passiveIncomePerSec = passiveIncome / 24 / 60 / 60;
+
+let currentTimeObj = {
+  month: currentDate.getMonth(),
+  day: currentDate.getDate(),
+  hour: currentDate.getHours(),
+  minute: currentDate.getMinutes(),
+  second: currentDate.getSeconds(),
+};
+let pastTimeObj = {};
+
+function balanceCalc(pastTimeObj, currentTimeObj) {
+  let pastTimeDays = 0;
+  for (let i = 0; i < pastTimeObj.month - 1; i++) {
+    pastTimeDays += monthDays[i];
+  }
+  pastTimeDays += pastTimeObj.day - 1;
+  let pastTimeSeconds = pastTimeDays * 24 * 60 * 60;
+  pastTimeSeconds += pastTimeObj.hour * 60 * 60;
+  pastTimeSeconds += pastTimeObj.minute * 60;
+  pastTimeSeconds += pastTimeObj.second;
+
+  let currentTimeDays = 0;
+  for (let i = 0; i < currentTimeObj.month - 1; i++) {
+    currentTimeDays += monthDays[i];
+  }
+  currentTimeDays += currentTimeObj.day - 1;
+  let currentTimeSeconds = currentTimeDays * 24 * 60 * 60;
+  currentTimeSeconds += currentTimeObj.hour * 60 * 60;
+  currentTimeSeconds += currentTimeObj.minute * 60;
+  currentTimeSeconds += currentTimeObj.second;
+
+  let difference = currentTimeSeconds - pastTimeSeconds;
+  console.log(currentTimeSeconds, pastTimeSeconds);
+  balance += difference * passiveIncomePerSec;
+  return balance;
+}
+
+balance = balanceCalc(pastTimeObj, currentTimeObj);
 
 setInterval(() => {
-  let incomePerSecond = passiveIncome / 24 / 60 / 60;
-  balance += incomePerSecond;
+  let newTimeObject = window.localStorage.getItem("myObject");
+  pastTimeObj = JSON.parse(newTimeObject);
+  window.localStorage.setItem("pastTimeObject", JSON.stringify(currentTimeObj));
+  console.log();
   balanceEl.textContent = `€${balance.toFixed(5)}`;
 }, 1000);
