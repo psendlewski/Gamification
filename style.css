@@ -134,17 +134,20 @@ td {
   box-shadow: 10px 10px 10px black;
 }
 
-#income img {
-  width: 50px;
-  height: 50px;
+#header1 img {
+  position: absolute;
+  left: 420px;
+  width: 70px;
+  height: 70px;
 }
 #balance {
   color: goldenrod;
-  font-size: 40px;
+  font-size: 35px;
 }
 
 #day {
   font-size: 50px;
+  padding-top: 20px;
 }
 #month {
   font-size: 20px;
@@ -290,4 +293,12 @@ td {
 .weekdays {
   width: 130px;
   height: 30px;
+}
+#dayNumbers {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  text-align: center;
+  margin: 0;
+  padding: 0;
 }
