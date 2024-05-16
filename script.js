@@ -351,6 +351,8 @@ function updateProgressBar() {
   console.log(progressBarEl);
   progressBarEl.style.width = width > 5 ? `${width}px` : `${5}px`;
 }
+
+
 setInterval(() => {
   // console.log(currentTimeObj);
   loadPastTimeObj();
