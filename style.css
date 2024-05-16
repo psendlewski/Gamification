@@ -631,7 +631,7 @@
   .weekdays {
     width: 14vw;
     height: 4vw;
-    font-size: 2.7vw;
+    font-size: 2.5vw;
   }
   #day-numbers {
     display: flex;
