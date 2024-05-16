@@ -255,11 +255,11 @@ saveBtnEl.addEventListener("click", () => {
 
   currentDayEl.innerText = dayNr;
   let ft = document.createElement("p");
-  ft.innerHTML = `FT: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ${freeTime}h`;
+  ft.innerHTML = `FT: &nbsp;  ${freeTime}h`;
   let s = document.createElement("p");
-  s.innerHTML = `S: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  ${studying}h`;
+  s.innerHTML = `S: &nbsp; &nbsp; ${studying}h`;
   let p = document.createElement("p");
-  p.innerHTML = `P: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  ${productivity}%`;
+  p.innerHTML = `P: &nbsp;    ${productivity}%`;
   currentDayEl.appendChild(ft);
   currentDayEl.appendChild(s);
   currentDayEl.appendChild(p);
@@ -351,7 +351,6 @@ function updateProgressBar() {
   console.log(progressBarEl);
   progressBarEl.style.width = width > 5 ? `${width}px` : `${5}px`;
 }
-
 
 setInterval(() => {
   // console.log(currentTimeObj);
