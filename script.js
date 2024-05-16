@@ -349,7 +349,13 @@ function updateProgressBar() {
   let width = progressBarWidth * (currentTimeObj.balance / upgradeCost);
   console.log(width);
   console.log(progressBarEl);
-  progressBarEl.style.width = width > 5 ? `${width}px` : `${5}px`;
+  if (width < 5) {
+    progressBarEl.style.width = `${5}px`;
+  } else if (width > 100) {
+    progressBarEl.style.width = `${100}px`;
+  } else {
+    progressBarEl.style.width = `${width}px`;
+  }
 }
 
 setInterval(() => {

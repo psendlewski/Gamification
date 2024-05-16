@@ -1,343 +1,8 @@
-body {
-  background-image: url("bg.jpg");
-  background-size: cover;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  margin: 0;
-  padding: 0;
-}
-
-#container {
-  position: absolute;
-  top: 1vw;
-  width: 98vw;
-  height: 200vw;
-  border: 5px solid black;
-  background-color: black;
-  border-radius: 20px;
-  box-shadow: 20px 20px 20px black;
-}
-
-#header1 {
-  position: absolute;
-  /* width: 900px;
-  height: 260px; */
-  width: 100%;
-  height: 50vw;
-  border: 1px solid black;
-  border-radius: 20px 20px 10px 10px;
-  box-shadow: 5px 5px 5px #252525;
-  background-color: #111111;
-  color: orangered;
-}
-
-#header1 table {
-  position: absolute;
-  top: 25%;
-  left: 2%;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  font-size: 3vw;
-  text-align: left;
-  margin: 0;
-  padding: 0;
-  text-shadow: 3px 3px 5px #000000;
-}
-
-#header1 #tab2 {
-  position: absolute;
-  top: 25%;
-  left: 13%;
-  font-size: 3vw;
-  color: rgba(255, 145, 0, 0.897);
-}
-#header1 #tab3 {
-  position: absolute;
-  top: 25%;
-  left: 73%;
-  font-size: 3vw;
-  color: rgba(255, 145, 0, 0.897);
-}
-#header1 #tab4 {
-  position: absolute;
-  top: 25%;
-  left: 87%;
-  font-size: 3vw;
-  color: rgba(245, 245, 245, 0.897);
-}
-th,
-td {
-  border-bottom: 3px solid black;
-  padding: 4vw 0px;
-}
-
-#progress-background {
-  position: absolute;
-  top: 20%;
-  left: 0.5vw;
-  height: 6%;
-  width: 100px;
-  background: rgb(255, 247, 26);
-  background: linear-gradient(
-    90deg,
-    rgba(255, 247, 26, 1) 35%,
-    rgba(255, 190, 0, 1) 100%
-  );
-  border-radius: 5px;
-  box-shadow: 5px 5px 5px #000000;
-  z-index: 1;
-}
-#progress-bar {
-  position: absolute;
-  top: 20%;
-  left: 0.5vw;
-  height: 6%;
-  width: 0;
-  background: rgb(255, 126, 0);
-  background: linear-gradient(
-    90deg,
-    rgba(255, 126, 0, 1) 0%,
-    rgba(255, 67, 1, 1) 100%
-  );
-  border-radius: 5px;
-  z-index: 5;
-}
-#progress-bar .exp {
-  position: absolute;
-  color: rgb(0, 0, 0);
-  font-size: 3vw;
-  font-weight: 1000;
-  top: 0px;
-  left: 25px;
-  z-index: 100;
-  text-shadow: 2px 2px 5px black;
-}
-
-#income {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  position: absolute;
-  top: 8vw;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgb(55, 55, 55);
-  background: linear-gradient(
-    141deg,
-    rgba(55, 55, 55, 1) 0%,
-    rgba(0, 0, 0, 1) 100%
-  );
-  width: 40vw;
-  height: 40vw;
-  border-radius: 10px;
-  margin: 0;
-  padding: 0;
-  box-shadow: 10px 10px 10px black;
-}
-
-#header1 img {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 15vw;
-  height: 15vw;
-}
-#balance {
-  color: goldenrod;
-  font-size: 8vw;
-}
-
-#day {
-  font-size: 12vw;
-  padding-top: 4vw;
-}
-#month {
-  font-size: 5vw;
-}
-#upgrade-btn {
-  position: absolute;
-  top: 30%;
-  left: 21%;
-  width: 7vw;
-  height: 7vw;
-  background: rgb(218, 165, 32);
-  background: linear-gradient(
-    141deg,
-    rgba(218, 165, 32, 1) 0%,
-    rgba(255, 67, 1, 1) 100%
-  );
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 3vw;
-  font-weight: 1000;
-  box-shadow: 5px 5px 5px black;
-}
-
-#ft-btn-down {
-  position: absolute;
-  top: 20vw;
-  left: 91vw;
-}
-#ft-btn-up {
-  position: absolute;
-  top: 14vw;
-  left: 91vw;
-}
-#s-btn-down {
-  position: absolute;
-  top: 33vw;
-  left: 91vw;
-}
-#s-btn-up {
-  position: absolute;
-  top: 27vw;
-  left: 91vw;
-}
-
-.up {
-  background: rgb(46, 204, 64);
-  background: linear-gradient(
-    141deg,
-    rgba(46, 204, 64, 1) 0%,
-    rgba(25, 97, 33, 1) 100%
-  );
-  width: 6vw;
-  height: 6vw;
-  border-radius: 7px;
-  box-shadow: 5px 5px 5px black;
-  font-size: 4vw;
-  font-weight: 700;
-  cursor: pointer;
-}
-.down {
-  background: rgb(255, 65, 54);
-  background: linear-gradient(
-    141deg,
-    rgba(255, 65, 54, 1) 0%,
-    rgba(116, 30, 25, 1) 100%
-  );
-  width: 6vw;
-  height: 6vw;
-  border-radius: 7px;
-  box-shadow: 5px 5px 5px black;
-  font-size: 4vw;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-#save-btn {
-  background: rgb(65, 65, 65);
-  background: linear-gradient(
-    141deg,
-    rgba(65, 65, 65, 1) 0%,
-    rgba(17, 17, 17, 1) 100%
-  );
-  width: 18vw;
-  height: 6vw;
-  border-radius: 7px;
-  box-shadow: 5px 5px 5px black;
-  font-size: 3vw;
-  font-weight: 700;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  top: 40vw;
-  left: 81vw;
-  transform: translateX(-50%);
-  cursor: pointer;
-}
-
-#cal-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  text-align: center;
-  position: absolute;
-  width: 98vw;
-  height: 110vw;
-  top: 55vw;
-  border-radius: 10px;
-  box-shadow: 5px 5px 5px #252525;
-  background-color: #111111;
-  z-index: 1;
-  color: aliceblue;
-}
-
-.cal-day {
-  width: 13vw;
-  height: 20vw;
-  text-align: center;
-  border-radius: 5px;
-  box-shadow: 5px 5px 5px #000000;
-}
-.act-day {
-  width: 13vw;
-  height: 20vw;
-  text-align: center;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px rgb(218, 144, 32);
-}
-.inact-day {
-  width: 13vw;
-  height: 20vw;
-  text-align: center;
-  border-radius: 5px;
-  box-shadow: 0px 0px 2px rgb(0, 0, 0);
-  color: #111111;
-}
-#weekdays {
-  display: flex;
-  justify-content: space-between;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-}
-.weekdays {
-  width: 14vw;
-  height: 4vw;
-  font-size: 2.7vw;
-}
-#day-numbers {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  font-size: 3vw;
-  margin-top: 0;
-}
-#day-numbers p {
-  text-align: left;
-  margin: 2vw 1vw;
-  font-size: 2.7vw;
-  font-weight: 500;
-
-  color: rgb(245, 215, 138);
-  text-decoration: underline black 2px;
-}
-.red {
-  border: 2px solid red;
-}
-.orange {
-  border: 2px solid orange;
-}
-.yellow {
-  border: 2px solid yellow;
-}
-.green {
-  border: 2px solid rgb(51, 236, 51);
-}
-/*================================================================================*/
 @media only screen and (min-width: 768px) {
   body {
     background-image: url("bg.jpg");
     background-size: cover;
-    height: 100vh;
+    height: 800px;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -643,6 +308,345 @@ td {
     text-align: left;
     margin: 3px 7px;
     font-size: 13px;
+    font-weight: 500;
+
+    color: rgb(245, 215, 138);
+    text-decoration: underline black 2px;
+  }
+  .red {
+    border: 2px solid red;
+  }
+  .orange {
+    border: 2px solid orange;
+  }
+  .yellow {
+    border: 2px solid yellow;
+  }
+  .green {
+    border: 2px solid rgb(51, 236, 51);
+  }
+}
+/*================================================================================*/
+@media only screen and (max-width: 767px) {
+  body {
+    background-image: url("bg.jpg");
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  #container {
+    position: absolute;
+    top: 1vw;
+    width: 98vw;
+    height: 200vw;
+    border: 5px solid black;
+    background-color: black;
+    border-radius: 20px;
+    box-shadow: 20px 20px 20px black;
+  }
+
+  #header1 {
+    position: absolute;
+    /* width: 900px;
+  height: 260px; */
+    width: 100%;
+    height: 50vw;
+    border: 1px solid black;
+    border-radius: 20px 20px 10px 10px;
+    box-shadow: 5px 5px 5px #252525;
+    background-color: #111111;
+    color: orangered;
+  }
+
+  #header1 table {
+    position: absolute;
+    top: 25%;
+    left: 2%;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+      sans-serif;
+    font-size: 3vw;
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    text-shadow: 3px 3px 5px #000000;
+  }
+
+  #header1 #tab2 {
+    position: absolute;
+    top: 25%;
+    left: 13%;
+    font-size: 3vw;
+    color: rgba(255, 145, 0, 0.897);
+  }
+  #header1 #tab3 {
+    position: absolute;
+    top: 25%;
+    left: 73%;
+    font-size: 3vw;
+    color: rgba(255, 145, 0, 0.897);
+  }
+  #header1 #tab4 {
+    position: absolute;
+    top: 25%;
+    left: 87%;
+    font-size: 3vw;
+    color: rgba(245, 245, 245, 0.897);
+  }
+  th,
+  td {
+    border-bottom: 3px solid black;
+    padding: 4vw 0px;
+  }
+
+  #progress-background {
+    position: absolute;
+    top: 20%;
+    left: 0.5vw;
+    height: 6%;
+    width: 100px;
+    background: rgb(255, 247, 26);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 247, 26, 1) 35%,
+      rgba(255, 190, 0, 1) 100%
+    );
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #000000;
+    z-index: 1;
+  }
+  #progress-bar {
+    position: absolute;
+    top: 20%;
+    left: 0.5vw;
+    height: 6%;
+    width: 0;
+    background: rgb(255, 126, 0);
+    background: linear-gradient(
+      90deg,
+      rgba(255, 126, 0, 1) 0%,
+      rgba(255, 67, 1, 1) 100%
+    );
+    border-radius: 5px;
+    z-index: 5;
+  }
+  #progress-bar .exp {
+    position: absolute;
+    color: rgb(0, 0, 0);
+    font-size: 3vw;
+    font-weight: 1000;
+    top: 0px;
+    left: 25px;
+    z-index: 100;
+    text-shadow: 2px 2px 5px black;
+  }
+
+  #income {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    position: absolute;
+    top: 8vw;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgb(55, 55, 55);
+    background: linear-gradient(
+      141deg,
+      rgba(55, 55, 55, 1) 0%,
+      rgba(0, 0, 0, 1) 100%
+    );
+    width: 40vw;
+    height: 40vw;
+    border-radius: 10px;
+    margin: 0;
+    padding: 0;
+    box-shadow: 10px 10px 10px black;
+  }
+
+  #header1 img {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 15vw;
+    height: 15vw;
+  }
+  #balance {
+    color: goldenrod;
+    font-size: 8vw;
+  }
+
+  #day {
+    font-size: 12vw;
+    padding-top: 4vw;
+  }
+  #month {
+    font-size: 5vw;
+  }
+  #upgrade-btn {
+    position: absolute;
+    top: 30%;
+    left: 21%;
+    width: 7vw;
+    height: 7vw;
+    background: rgb(218, 165, 32);
+    background: linear-gradient(
+      141deg,
+      rgba(218, 165, 32, 1) 0%,
+      rgba(255, 67, 1, 1) 100%
+    );
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+      sans-serif;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 3vw;
+    font-weight: 1000;
+    box-shadow: 5px 5px 5px black;
+  }
+
+  #ft-btn-down {
+    position: absolute;
+    top: 20vw;
+    left: 91vw;
+  }
+  #ft-btn-up {
+    position: absolute;
+    top: 14vw;
+    left: 91vw;
+  }
+  #s-btn-down {
+    position: absolute;
+    top: 33vw;
+    left: 91vw;
+  }
+  #s-btn-up {
+    position: absolute;
+    top: 27vw;
+    left: 91vw;
+  }
+
+  .up {
+    background: rgb(46, 204, 64);
+    background: linear-gradient(
+      141deg,
+      rgba(46, 204, 64, 1) 0%,
+      rgba(25, 97, 33, 1) 100%
+    );
+    width: 6vw;
+    height: 6vw;
+    border-radius: 7px;
+    box-shadow: 5px 5px 5px black;
+    font-size: 4vw;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .down {
+    background: rgb(255, 65, 54);
+    background: linear-gradient(
+      141deg,
+      rgba(255, 65, 54, 1) 0%,
+      rgba(116, 30, 25, 1) 100%
+    );
+    width: 6vw;
+    height: 6vw;
+    border-radius: 7px;
+    box-shadow: 5px 5px 5px black;
+    font-size: 4vw;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  #save-btn {
+    background: rgb(65, 65, 65);
+    background: linear-gradient(
+      141deg,
+      rgba(65, 65, 65, 1) 0%,
+      rgba(17, 17, 17, 1) 100%
+    );
+    width: 18vw;
+    height: 6vw;
+    border-radius: 7px;
+    box-shadow: 5px 5px 5px black;
+    font-size: 3vw;
+    font-weight: 700;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 40vw;
+    left: 81vw;
+    transform: translateX(-50%);
+    cursor: pointer;
+  }
+
+  #cal-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    text-align: center;
+    position: absolute;
+    width: 98vw;
+    height: 110vw;
+    top: 55vw;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px #252525;
+    background-color: #111111;
+    z-index: 1;
+    color: aliceblue;
+  }
+
+  .cal-day {
+    width: 13vw;
+    height: 20vw;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #000000;
+  }
+  .act-day {
+    width: 13vw;
+    height: 20vw;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgb(218, 144, 32);
+  }
+  .inact-day {
+    width: 13vw;
+    height: 20vw;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 0px 0px 2px rgb(0, 0, 0);
+    color: #111111;
+  }
+  #weekdays {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+  .weekdays {
+    width: 14vw;
+    height: 4vw;
+    font-size: 2.7vw;
+  }
+  #day-numbers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    font-size: 3vw;
+    margin-top: 0;
+  }
+  #day-numbers p {
+    text-align: left;
+    margin: 2vw 1vw;
+    font-size: 2.7vw;
     font-weight: 500;
 
     color: rgb(245, 215, 138);
