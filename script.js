@@ -14,6 +14,14 @@ const monthEl = document.querySelector("#month");
 
 const dayNumbersEl = document.querySelector("#day-numbers");
 
+// Progress bar
+const progressBgEl = document.querySelector("#progress-background");
+const progressBarEl = document.querySelector("#progress-bar");
+const expEl = document.querySelector(".exp");
+
+let upgradeCost = 20;
+let progressBarWidth = 200;
+
 let freeTime = 0;
 let studying = 0;
 
@@ -307,12 +315,10 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
   currentTimeSeconds += currentTimeObj.second;
 
   let difference = currentTimeSeconds - pastTimeSeconds;
-  console.log("Current Balance Before:", currentTimeObj.balance);
-  currentTimeObj.balance = pastTimeObj.balance;
-  currentTimeObj.balance += difference * passiveIncomePerSec;
+  currentTimeObj.balance =
+    pastTimeObj.balance + difference * passiveIncomePerSec;
   currentTimeObj.balance += passiveIncomePerSec;
-  pastTimeObj.balance = currentTimeObj.balance;
-  console.log("Current Balance After:", currentTimeObj.balance);
+  // console.log("Current Balance After:", currentTimeObj.balance);
   return currentTimeObj.balance;
 }
 // Load Past Time Object from local memory
@@ -321,6 +327,7 @@ function loadPastTimeObj() {
     let newTimeObject = window.localStorage.getItem("pastTimeObject");
     pastTimeObj = JSON.parse(newTimeObject);
   } else {
+    console.log("loadPastTimeObj - else");
     pastTimeObj.month = currentTimeObj.month;
     pastTimeObj.day = currentTimeObj.day;
     pastTimeObj.hour = currentTimeObj.hour;
@@ -337,9 +344,18 @@ function loadPastTimeObj() {
   }
 }
 
+function updateProgressBar() {
+  expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
+  let width = progressBarWidth * (currentTimeObj.balance / upgradeCost);
+  console.log(width);
+  console.log(progressBarEl);
+  progressBarEl.style.width = width > 5 ? `${width}px` : `${5}px`;
+}
 setInterval(() => {
   // console.log(currentTimeObj);
   loadPastTimeObj();
   balanceCalc(pastTimeObj, currentTimeObj);
   balanceEl.textContent = currentTimeObj.balance.toFixed(5);
+  updateProgressBar();
+  window.localStorage.setItem("pastTimeObject", JSON.stringify(currentTimeObj));
 }, 1000);

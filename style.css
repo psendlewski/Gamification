@@ -82,24 +82,23 @@ td {
     rgba(255, 247, 26, 1) 35%,
     rgba(255, 190, 0, 1) 100%
   );
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 5px 5px 5px #000000;
   z-index: 1;
 }
 #progress-bar {
-  display: inline-block;
   position: absolute;
   top: 30px;
   left: 50px;
   height: 30px;
-  width: 100px;
+  width: 0;
   background: rgb(255, 126, 0);
   background: linear-gradient(
     90deg,
     rgba(255, 126, 0, 1) 0%,
     rgba(255, 67, 1, 1) 100%
   );
-  border-radius: 10px;
+  border-radius: 5px;
   z-index: 5;
 }
 #progress-bar .exp {
