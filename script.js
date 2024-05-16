@@ -267,11 +267,7 @@ let monthDays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 const currentDate = new Date();
 
 let balance;
-if (!balance)
-  balance = setTimeout(
-    () => parseInt(prompt("Enter a starting balance")),
-    2000
-  );
+
 let passiveIncome = 1;
 let passiveIncomePerSec = passiveIncome / 24 / 60 / 60;
 
@@ -281,10 +277,15 @@ let currentTimeObj = {
   hour: currentDate.getHours(),
   minute: currentDate.getMinutes(),
   second: currentDate.getSeconds(),
+  balance,
 };
 let pastTimeObj = {};
 
 function balanceCalc(pastTimeObj, currentTimeObj) {
+  // console.log("currentTimeObj Balance:", currentTimeObj.balance);
+  // console.log("pastTimeObj", pastTimeObj);
+
+  // balanceCalc(pastTimeObj, currentTimeObj);
   let pastTimeDays = 0;
   for (let i = 0; i < pastTimeObj.month - 1; i++) {
     pastTimeDays += monthDays[i];
@@ -306,17 +307,39 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
   currentTimeSeconds += currentTimeObj.second;
 
   let difference = currentTimeSeconds - pastTimeSeconds;
-  console.log(currentTimeSeconds, pastTimeSeconds);
-  balance += difference * passiveIncomePerSec;
-  return balance;
+  console.log("Current Balance Before:", currentTimeObj.balance);
+  currentTimeObj.balance = pastTimeObj.balance;
+  currentTimeObj.balance += difference * passiveIncomePerSec;
+  currentTimeObj.balance += passiveIncomePerSec;
+  pastTimeObj.balance = currentTimeObj.balance;
+  console.log("Current Balance After:", currentTimeObj.balance);
+  return currentTimeObj.balance;
+}
+// Load Past Time Object from local memory
+function loadPastTimeObj() {
+  if (window.localStorage.getItem("pastTimeObject")) {
+    let newTimeObject = window.localStorage.getItem("pastTimeObject");
+    pastTimeObj = JSON.parse(newTimeObject);
+  } else {
+    pastTimeObj.month = currentTimeObj.month;
+    pastTimeObj.day = currentTimeObj.day;
+    pastTimeObj.hour = currentTimeObj.hour;
+    pastTimeObj.minute = currentTimeObj.minute;
+    pastTimeObj.second = currentTimeObj.second;
+    if (!currentTimeObj.balance) {
+      currentTimeObj.balance = parseInt(prompt("Enter a starting balance"));
+      pastTimeObj.balance = currentTimeObj.balance;
+      window.localStorage.setItem(
+        "pastTimeObject",
+        JSON.stringify(currentTimeObj)
+      );
+    }
+  }
 }
 
-balance = balanceCalc(pastTimeObj, currentTimeObj);
-
 setInterval(() => {
-  let newTimeObject = window.localStorage.getItem("myObject");
-  pastTimeObj = JSON.parse(newTimeObject);
-  window.localStorage.setItem("pastTimeObject", JSON.stringify(currentTimeObj));
-  console.log();
-  balanceEl.textContent = `€${balance.toFixed(5)}`;
+  // console.log(currentTimeObj);
+  loadPastTimeObj();
+  balanceCalc(pastTimeObj, currentTimeObj);
+  balanceEl.textContent = currentTimeObj.balance.toFixed(5);
 }, 1000);
