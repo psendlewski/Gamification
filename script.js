@@ -8,11 +8,18 @@ const ftBtnDownEl = document.querySelector("#ft-btn-down");
 const sBtnUpEl = document.querySelector("#s-btn-up");
 const sBtnDownEl = document.querySelector("#s-btn-down");
 
+// Upgrade Button
+const upgradeBtnEl = document.querySelector("#upgrade-btn");
+
 // Date Elements
 const dayEl = document.querySelector("#day");
 const monthEl = document.querySelector("#month");
 
 const dayNumbersEl = document.querySelector("#day-numbers");
+
+// Display Income & Level
+const incomeEl = document.querySelector("#incomeEl");
+const levelEl = document.querySelector("#level");
 
 // Progress bar
 const progressBgEl = document.querySelector("#progress-background");
@@ -31,7 +38,7 @@ ftBtnUpEl.addEventListener("click", () => {
 });
 
 ftBtnDownEl.addEventListener("click", () => {
-  if (freeTime >= 1) freeTime--;
+  if (freeTime >= 1 && freeTime > studying) freeTime--;
   freeTimeEl.textContent = freeTime;
 });
 sBtnUpEl.addEventListener("click", () => {
@@ -276,7 +283,53 @@ const currentDate = new Date();
 
 let balance;
 
-let passiveIncome = 1;
+function loadPassiveIncome() {
+  if (window.localStorage.getItem("passiveIncome")) {
+    passiveIncome = parseInt(window.localStorage.getItem("passiveIncome"));
+  } else {
+    console.log(
+      "PassiveIncomeLoadFailed",
+      window.localStorage.getItem("passiveIncome")
+    );
+    passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
+    window.localStorage.setItem("passiveIncome", JSON.stringify(passiveIncome));
+  }
+  if (passiveIncome === 0) {
+    // console.log("Passive Income === 0");
+    passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
+    window.localStorage.setItem("passiveIncome", JSON.stringify(passiveIncome));
+  }
+
+  if (window.localStorage.getItem("passiveIncomeLevel")) {
+    passiveIncomeLevel = parseInt(
+      window.localStorage.getItem("passiveIncomeLevel")
+    );
+  } else {
+    console.log(
+      "PassiveIncomeLevelLoadFailed",
+      window.localStorage.getItem("passiveIncomeLevel")
+    );
+    passiveIncomeLevel = 1;
+    window.localStorage.setItem(
+      "passiveIncomeLevel",
+      JSON.stringify(passiveIncomeLevel)
+    );
+  }
+  // console.log("PassiveIncome", passiveIncome);
+  // console.log("PassiveIncomeLevel", passiveIncomeLevel);
+}
+
+// Passive Income
+let passiveIncomePerLevel = 0.1;
+let passiveIncomeLevel;
+if (window.localStorage.getItem("passiveIncomeLevel"))
+  passiveIncomeLevel = parseInt(
+    window.localStorage.getItem("passiveIncomeLevel")
+  );
+let passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
+console.log(passiveIncome);
+
+loadPassiveIncome();
 let passiveIncomePerSec = passiveIncome / 24 / 60 / 60;
 
 let currentTimeObj = {
@@ -289,11 +342,10 @@ let currentTimeObj = {
 };
 let pastTimeObj = {};
 
-function balanceCalc(pastTimeObj, currentTimeObj) {
-  // console.log("currentTimeObj Balance:", currentTimeObj.balance);
-  // console.log("pastTimeObj", pastTimeObj);
+// Balance Calc Function ========
 
-  // balanceCalc(pastTimeObj, currentTimeObj);
+function balanceCalc(pastTimeObj, currentTimeObj) {
+  // Calculate Time Difference in seconds
   let pastTimeDays = 0;
   for (let i = 0; i < pastTimeObj.month - 1; i++) {
     pastTimeDays += monthDays[i];
@@ -313,19 +365,74 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
   currentTimeSeconds += currentTimeObj.hour * 60 * 60;
   currentTimeSeconds += currentTimeObj.minute * 60;
   currentTimeSeconds += currentTimeObj.second;
-
+  // Calculate the difference
   let difference = currentTimeSeconds - pastTimeSeconds;
+
+  // console.log("Old balance:", currentTimeObj.balance);
+  // console.log(
+  //   "passiveIncome:",
+  //   passiveIncome,
+  //   "PassiveIncomePerSec",
+  //   passiveIncomePerSec
+  // );
+  // Add Profit
   currentTimeObj.balance =
-    pastTimeObj.balance + difference * passiveIncomePerSec;
-  currentTimeObj.balance += passiveIncomePerSec;
-  // console.log("Current Balance After:", currentTimeObj.balance);
+    pastTimeObj.balance + difference * (passiveIncomePerSec / 2);
+  currentTimeObj.balance += passiveIncomePerSec / 2;
+
+  // Save new balance
+  window.localStorage.setItem("pastTimeObject", JSON.stringify(currentTimeObj));
+
+  // console.log("New balance:", currentTimeObj.balance);
+  // console.log(
+  //   "Current Time Seconds:",
+  //   currentTimeSeconds,
+  //   "Past Time Seconds",
+  //   pastTimeSeconds,
+  //   "Difference:",
+  //   difference
+  // );
+
+  // Display Balance and passive income
+  if (currentTimeObj.balance) {
+    balanceEl.textContent = currentTimeObj.balance.toFixed(6);
+    expEl.textContent = currentTimeObj.balance.toFixed(1);
+  }
+  if (passiveIncomeLevel) {
+    console.log(passiveIncome);
+    levelEl.textContent = passiveIncomeLevel;
+    incomeEl.textContent = passiveIncome.toFixed(1);
+  }
   return currentTimeObj.balance;
 }
 // Load Past Time Object from local memory
 function loadPastTimeObj() {
   if (window.localStorage.getItem("pastTimeObject")) {
     let newTimeObject = window.localStorage.getItem("pastTimeObject");
+
     pastTimeObj = JSON.parse(newTimeObject);
+    if (
+      !pastTimeObj.month ||
+      !pastTimeObj.day ||
+      !pastTimeObj.hour ||
+      !pastTimeObj.minute ||
+      !pastTimeObj.second
+    ) {
+      pastTimeObj = {
+        month: currentTimeObj.month,
+        day: currentTimeObj.day,
+        hour: currentTimeObj.hour,
+        minute: currentTimeObj.minute,
+        second: currentTimeObj.second,
+      };
+      if (!pastTimeObj.balance && currentTimeObj.balance) {
+        pastTimeObj.balance = currentTimeObj.balance;
+      } else {
+        currentTimeObj.balance = parseInt(prompt("Enter a starting balance"));
+        pastTimeObj.balance = currentTimeObj.balance;
+        updateProgressBar();
+      }
+    }
   } else {
     console.log("loadPastTimeObj - else");
     pastTimeObj.month = currentTimeObj.month;
@@ -333,36 +440,99 @@ function loadPastTimeObj() {
     pastTimeObj.hour = currentTimeObj.hour;
     pastTimeObj.minute = currentTimeObj.minute;
     pastTimeObj.second = currentTimeObj.second;
-    if (!currentTimeObj.balance) {
+    if (currentTimeObj.balance) {
+      pastTimeObj.balance = currentTimeObj.balance;
+    } else {
       currentTimeObj.balance = parseInt(prompt("Enter a starting balance"));
       pastTimeObj.balance = currentTimeObj.balance;
       window.localStorage.setItem(
         "pastTimeObject",
         JSON.stringify(currentTimeObj)
       );
+      updateProgressBar();
+    }
+  }
+  // Load Passive Income
+  if (window.localStorage.getItem("passiveIncomeLevel")) {
+    passiveIncomeLevel = parseInt(
+      window.localStorage.getItem("passiveIncomeLevel")
+    );
+  } else {
+    console.log("loadPastTimeObj() - passiveIncomeLevel Load Failed");
+    passiveIncomeLevel = 1;
+    window.localStorage.setItem(
+      "pastTimeObject",
+      JSON.stringify(passiveIncomeLevel)
+    );
+  }
+
+  // console.log("pastTimeObj", pastTimeObj);
+  // console.log("currentTimeObj", currentTimeObj);
+  // console.log("new time object", newTimeObject);
+}
+
+// Progress Bar
+function updateProgressBar() {
+  if (currentTimeObj.balance) {
+    expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
+    let width = progressBarWidth * (currentTimeObj.balance / upgradeCost);
+    // console.log("Width:", width);
+    if (width < 5) {
+      progressBarEl.style.width = `${5}px`;
+    } else if (width > 100) {
+      progressBarEl.style.width = `${progressBarWidth}px`;
+    } else {
+      progressBarEl.style.width = `${width}px`;
     }
   }
 }
 
-function updateProgressBar() {
-  expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
-  let width = progressBarWidth * (currentTimeObj.balance / upgradeCost);
-  console.log(width);
-  console.log(progressBarEl);
-  if (width < 5) {
-    progressBarEl.style.width = `${5}px`;
-  } else if (width > 100) {
-    progressBarEl.style.width = `${100}px`;
-  } else {
-    progressBarEl.style.width = `${width}px`;
-  }
-}
+// Upgrade Button
+upgradeBtnEl.addEventListener("click", () => {
+  // Change and export Balance
+  if (currentTimeObj.balance >= upgradeCost) {
+    currentTimeObj.balance -= upgradeCost;
+    pastTimeObj.balance = currentTimeObj.balance;
+    window.localStorage.setItem(
+      "pastTimeObject",
+      JSON.stringify(currentTimeObj)
+    );
 
+    // Change and export passive income levels
+    passiveIncomeLevel++;
+    passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
+
+    window.localStorage.setItem("passiveIncome", JSON.stringify(passiveIncome));
+    window.localStorage.setItem(
+      "passiveIncomeLevel",
+      JSON.stringify(passiveIncomeLevel)
+    );
+    updateProgressBar();
+    console.log(
+      "PassiveIncomePerLevel",
+      passiveIncomePerLevel,
+      "PassiveIncomeLevel",
+      passiveIncomeLevel,
+      "PassiveIncome:",
+      passiveIncome
+    );
+
+    // Display
+    balanceEl.textContent = currentTimeObj.balance.toFixed(6);
+    expEl.textContent = currentTimeObj.balance.toFixed(1);
+    levelEl.textContent = passiveIncomeLevel;
+    if (passiveIncome % 1 === 0) {
+      incomeEl.textContent = `€${passiveIncome.toFixed(1)}/d`;
+    } else {
+      incomeEl.textContent = `€${passiveIncome.toFixed(1)}0/d`;
+    }
+  }
+});
+
+// Function calls on interval
 setInterval(() => {
-  // console.log(currentTimeObj);
   loadPastTimeObj();
+  loadPassiveIncome();
   balanceCalc(pastTimeObj, currentTimeObj);
-  balanceEl.textContent = currentTimeObj.balance.toFixed(5);
   updateProgressBar();
-  window.localStorage.setItem("pastTimeObject", JSON.stringify(currentTimeObj));
-}, 1000);
+}, 500);
