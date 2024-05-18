@@ -73,6 +73,8 @@ let incomePerStudyingHour = 1;
 let productivity;
 let totalIncomeForStudying;
 let currentIncomeForStudying;
+let oldIncomeForStudying;
+let incomeForStudyingDifference;
 let productivityColor;
 
 // Create Current Day Data Object ===============================
@@ -378,15 +380,22 @@ fetchData();
 let saveBtnEl = document.querySelector("#save-btn");
 
 saveBtnEl.addEventListener("click", () => {
+  currentIncomeForStudying = studying * incomePerStudyingHour;
+  oldIncomeForStudying =
+    currentDayCalendarData && currentDayCalendarData.studying
+      ? currentDayCalendarData.studying * incomePerStudyingHour
+      : 0;
+  incomeForStudyingDifference = currentIncomeForStudying - oldIncomeForStudying;
+
   createCalendarDayDataObject();
 
   // Change current income for studying
-  currentIncomeForStudying =
-    currentDayCalendarData.studying * incomePerStudyingHour;
-  console.log(currentIncomeForStudying); //                                    **********************
+  currentTimeObj.balance += incomeForStudyingDifference;
+  console.log("incomeForStudyingDifference", incomeForStudyingDifference); // *************************
 
+  // Save New Balance in Local Storage
+  window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
   // Change Border Color depending on productivity
-
   productivity =
     studying && freeTime ? ((studying / freeTime) * 100).toFixed(0) : 0;
   if (studying / freeTime < 0.5) {
