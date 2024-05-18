@@ -364,6 +364,9 @@ let pastTimeObj = {};
 // Balance Calc Function ========
 
 function balanceCalc(pastTimeObj, currentTimeObj) {
+  console.log("pastTimeObj", pastTimeObj, "currentTimeObj", currentTimeObj);
+  // Load Objects
+
   // Calculate Time Difference in seconds
   let pastTimeDays = 0;
   for (let i = 0; i < pastTimeObj.month - 1; i++) {
@@ -387,13 +390,13 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
   // Calculate the difference
   let difference = currentTimeSeconds - pastTimeSeconds;
 
-  console.log("Old balance:", currentTimeObj.balance); //                         **********************
-  console.log(
-    "passiveIncome:",
-    passiveIncome,
-    "PassiveIncomePerSec",
-    passiveIncomePerSec
-  );
+  // console.log("Old balance:", currentTimeObj.balance); //                         **********************
+  // console.log(
+  //   "passiveIncome:",
+  //   passiveIncome,
+  //   "PassiveIncomePerSec",
+  //   passiveIncomePerSec
+  // );
   // Add Profit
   currentTimeObj.balance =
     pastTimeObj.balance + difference * (passiveIncomePerSec / 2);
@@ -402,17 +405,17 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
   // Save new balance
   window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
 
-  console.log("New balance:", currentTimeObj.balance); //                         **********************
-  console.log(
-    "Current Time Seconds:",
-    currentTimeSeconds,
-    "Past Time Seconds",
-    pastTimeSeconds,
-    "Difference:",
-    difference,
-    "Local Storage- pastTimeObj",
-    window.localStorage.getItem("pastTimeObj")
-  );
+  // console.log("New balance:", currentTimeObj.balance); //                         **********************
+  // console.log(
+  //   "Current Time Seconds:",
+  //   currentTimeSeconds,
+  //   "Past Time Seconds",
+  //   pastTimeSeconds,
+  //   "Difference:",
+  //   difference,
+  //   "Local Storage- pastTimeObj",
+  //   window.localStorage.getItem("pastTimeObj")
+  // );
 
   // Display Balance
   if (currentTimeObj.balance) {
@@ -470,7 +473,7 @@ function loadPastTimeObj() {
         "pastTimeObj",
         JSON.stringify(currentTimeObj)
       );
-      console.log("Created new PastTimeObj"); //                         **********************
+      // console.log("Created new PastTimeObj"); //                         **********************
       updateProgressBar();
     }
   }
@@ -523,7 +526,6 @@ upgradeBtnEl.addEventListener("click", () => {
   // Change and export Balance
   if (currentTimeObj.balance >= upgradeCost) {
     currentTimeObj.balance -= upgradeCost;
-    pastTimeObj.balance = currentTimeObj.balance;
     window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
     console.log(window.localStorage.getItem("pastTimeObj")); //                         **********************
 
