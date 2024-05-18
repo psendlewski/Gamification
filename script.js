@@ -68,6 +68,46 @@ let skipLastDays;
 
 let currentDayEl;
 
+// Productivity
+let incomePerStudyingHour = 1;
+let productivity;
+let totalIncomeForStudying;
+let currentIncomeForStudying;
+let productivityColor;
+
+// Create Current Day Data Object ===============================
+let currentDayCalendarData;
+let currentFullDate;
+
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+const currentMonth = currentDate.getMonth();
+const currentDay = currentDate.getDate();
+
+function createCalendarDayDataObject() {
+  // Get current Date
+  currentFullDate = `${currentYear}-${currentMonth + 1}-${currentDay}`;
+  // console.log(currentFullDate); //                                     ******************************
+
+  // Create Current day Data Object
+  let currentDayDataObject = {};
+  currentDayDataObject.freeTime = freeTime;
+  currentDayDataObject.studying = studying;
+  currentDayDataObject.productivity =
+    studying && freeTime ? ((studying / freeTime) * 100).toFixed(0) : 0;
+
+  // Save Data To Local Storage
+  window.localStorage.setItem(
+    `${currentFullDate}`,
+    JSON.stringify(currentDayDataObject)
+  );
+
+  //Save Data to Variable
+  currentDayCalendarData = JSON.parse(
+    window.localStorage.getItem(`${currentFullDate}`)
+  );
+  console.log(currentDayCalendarData); //                           ****************************
+}
 // Function to fetch data from API
 
 function fetchData() {
@@ -190,9 +230,6 @@ function fetchData() {
         // So, to get the last day of the month, we set the day to 0 of the next month
         return new Date(year, month + 1, 0).getDate();
       }
-      const currentDate = new Date();
-      const currentYear = currentDate.getFullYear();
-      const currentMonth = currentDate.getMonth();
 
       let daysInMonth = getDaysInMonth(currentYear, currentMonth);
 
@@ -201,7 +238,13 @@ function fetchData() {
       skipLastDays = 35 - skipFirstDays - daysInMonth;
 
       let dayCounter = 0;
-      // Building the Calendar
+      let currentLoopDayCounter;
+      let currentLoopDayEl;
+      let currentLoopDate;
+      let currentDayLoopObject;
+
+      // ===================================Building the Calendar ========================================================
+
       // Skip first days
       if (skipFirstDays > 0) {
         for (let i = 0; i < skipFirstDays; i++) {
@@ -212,14 +255,102 @@ function fetchData() {
           dayNumbersEl.appendChild(inactiveDay);
         }
       }
+
       // Calendar days
       for (let i = 0; i < daysInMonth; i++) {
         dayCounter++;
+
+        // Create Cal Day
         let calDay = document.createElement("div");
         calDay.classList.add("cal-day");
         calDay.setAttribute("id", `d${dayCounter}`);
         calDay.textContent = `${i + 1}`;
         dayNumbersEl.appendChild(calDay);
+        // console.log(currentLoopDayCounter); //                                       ***************************
+
+        // Set Variables
+        currentLoopDayCounter = dayCounter - skipFirstDays;
+        currentLoopDayEl = document.querySelector(`#d${dayCounter}`);
+        // console.log(  //                                                ***************************************
+        //   "dayCounter",
+        //   dayCounter,
+        //   "currentLoopDayCounter",
+        //   currentLoopDayCounter
+        // );
+        currentLoopDate = `${currentYear}-${
+          currentMonth + 1
+        }-${currentLoopDayCounter}`;
+        currentDayLoopObject = JSON.parse(
+          window.localStorage.getItem(`${currentLoopDate}`)
+        );
+
+        // console.log(
+        //   // ***********************************
+
+        //   "currentLoopDayEl",
+        //   currentLoopDayEl,
+        //   "currentLoopDate",
+        //   currentLoopDate,
+        //   "currentDayLoopObject",
+        //   currentDayLoopObject
+        // );
+        //Add Text to Current Day
+        let ft = document.createElement("p");
+        let s = document.createElement("p");
+        let p = document.createElement("p");
+        // Productivity and color
+
+        if (currentDayLoopObject) {
+          if (
+            currentDayLoopObject.studying / currentDayLoopObject.freeTime <
+            0.5
+          ) {
+            productivityColor = "red";
+          } else if (
+            currentDayLoopObject.studying / currentDayLoopObject.freeTime <
+            0.6
+          ) {
+            productivityColor = "orange";
+          } else if (
+            currentDayLoopObject.studying / currentDayLoopObject.freeTime <
+            0.7
+          ) {
+            productivityColor = "yellow";
+          } else {
+            productivityColor = "green";
+          }
+        }
+        // console.log(        //                                            *******************************
+        //   "currentDayLoopObject",
+        //   currentDayLoopObject,
+        //   "productivityColor",
+        //   productivityColor
+        // );
+
+        if (
+          !currentDayLoopObject ||
+          !currentDayLoopObject.freeTime ||
+          !currentDayLoopObject.studying ||
+          !currentDayLoopObject.productivity
+        ) {
+          ft.innerHTML = `FT: -`;
+          s.innerHTML = `S: -`;
+          p.innerHTML = `P: -`;
+          currentLoopDayEl.appendChild(ft);
+          currentLoopDayEl.appendChild(s);
+          currentLoopDayEl.appendChild(p);
+          currentLoopDayEl.classList.remove("red", "orange", "yellow", "green");
+        } else {
+          ft.innerHTML = `FT:   ${currentDayLoopObject.freeTime}h`;
+          s.innerHTML = `S:   ${currentDayLoopObject.studying}h`;
+          p.innerHTML = `P: ${currentDayLoopObject.productivity}%`;
+          currentLoopDayEl.appendChild(ft);
+          currentLoopDayEl.appendChild(s);
+          currentLoopDayEl.appendChild(p);
+          currentLoopDayEl.classList.remove("red", "orange", "yellow", "green");
+          currentLoopDayEl.classList.add(`${productivityColor}`);
+        }
+        // console.log("currentLoopDayEl.classList,", currentLoopDayEl.classList); //***************************** */
       }
       // Skip last days
       for (let i = 0; i < skipLastDays; i++) {
@@ -242,11 +373,21 @@ function fetchData() {
 
 fetchData();
 
-// Add FreeTime & Studying to current day
+// Add FreeTime & Studying to current day + Save Income From Studying Hours
+
 let saveBtnEl = document.querySelector("#save-btn");
+
 saveBtnEl.addEventListener("click", () => {
-  let productivityColor;
-  let productivity =
+  createCalendarDayDataObject();
+
+  // Change current income for studying
+  currentIncomeForStudying =
+    currentDayCalendarData.studying * incomePerStudyingHour;
+  console.log(currentIncomeForStudying); //                                    **********************
+
+  // Change Border Color depending on productivity
+
+  productivity =
     studying && freeTime ? ((studying / freeTime) * 100).toFixed(0) : 0;
   if (studying / freeTime < 0.5) {
     productivityColor = "red";
@@ -257,11 +398,11 @@ saveBtnEl.addEventListener("click", () => {
   } else {
     productivityColor = "green";
   }
-  currentDayEl;
   if (currentDayEl.firstChild) currentDayEl.firstChild.remove();
   if (currentDayEl.firstChild) currentDayEl.firstChild.remove();
   if (currentDayEl.firstChild) currentDayEl.firstChild.remove();
 
+  // Add Text to Current Day
   currentDayEl.innerText = dayNr;
   let ft = document.createElement("p");
   ft.innerHTML = `FT:   ${freeTime}h`;
@@ -280,8 +421,6 @@ saveBtnEl.addEventListener("click", () => {
 const balanceEl = document.querySelector("#balance");
 
 let monthDays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-const currentDate = new Date();
 
 let balance;
 
@@ -387,13 +526,13 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
   // Calculate the difference
   let difference = currentTimeSeconds - pastTimeSeconds;
 
-  console.log("Old balance:", currentTimeObj.balance); //                         **********************
-  console.log(
-    "passiveIncome:",
-    passiveIncome,
-    "PassiveIncomePerSec",
-    passiveIncomePerSec
-  );
+  // console.log("Old balance:", currentTimeObj.balance); //                         **********************
+  // console.log(
+  //   "passiveIncome:",
+  //   passiveIncome,
+  //   "PassiveIncomePerSec",
+  //   passiveIncomePerSec
+  // );
   // Add Profit
   currentTimeObj.balance =
     pastTimeObj.balance + difference * (passiveIncomePerSec / 2);
@@ -402,17 +541,17 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
   // Save new balance
   window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
 
-  console.log("New balance:", currentTimeObj.balance); //                         **********************
-  console.log(
-    "Current Time Seconds:",
-    currentTimeSeconds,
-    "Past Time Seconds",
-    pastTimeSeconds,
-    "Difference:",
-    difference,
-    "Local Storage- pastTimeObj",
-    window.localStorage.getItem("pastTimeObj")
-  );
+  // console.log("New balance:", currentTimeObj.balance); //                         **********************
+  // console.log(
+  //   "Current Time Seconds:",
+  //   currentTimeSeconds,
+  //   "Past Time Seconds",
+  //   pastTimeSeconds,
+  //   "Difference:",
+  //   difference,
+  //   "Local Storage- pastTimeObj",
+  //   window.localStorage.getItem("pastTimeObj")
+  // );
 
   // Display Balance
   if (currentTimeObj.balance) {
@@ -470,7 +609,7 @@ function loadPastTimeObj() {
         "pastTimeObj",
         JSON.stringify(currentTimeObj)
       );
-      console.log("Created new PastTimeObj"); //                         **********************
+      // console.log("Created new PastTimeObj"); //                         **********************
       updateProgressBar();
     }
   }
@@ -504,9 +643,10 @@ function checkViewportWidth() {
 // Progress Bar
 function updateProgressBar() {
   checkViewportWidth();
+  let width;
   if (currentTimeObj.balance) {
     expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
-    let width = progressBarWidth * (currentTimeObj.balance / upgradeCost);
+    width = progressBarWidth * (currentTimeObj.balance / upgradeCost);
     // console.log("Width:", width);//                         **********************
     if (width < 5) {
       progressBarEl.style.width = `${5}px`;
@@ -515,6 +655,11 @@ function updateProgressBar() {
     } else {
       progressBarEl.style.width = `${width}px`;
     }
+  }
+  if (width >= 100) {
+    progressBarEl.classList.add("light-up");
+  } else {
+    progressBarEl.classList.remove("light-up");
   }
 }
 
@@ -525,7 +670,7 @@ upgradeBtnEl.addEventListener("click", () => {
     currentTimeObj.balance -= upgradeCost;
     pastTimeObj.balance = currentTimeObj.balance;
     window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
-    console.log(window.localStorage.getItem("pastTimeObj")); //                         **********************
+    // console.log(window.localStorage.getItem("pastTimeObj")); //                         **********************
 
     // Change and export passive income levels
     passiveIncomeLevel++;
@@ -537,15 +682,15 @@ upgradeBtnEl.addEventListener("click", () => {
       JSON.stringify(passiveIncomeLevel)
     );
     updateProgressBar();
-    console.log(
-      //                         **********************
-      "PassiveIncomePerLevel",
-      passiveIncomePerLevel,
-      "PassiveIncomeLevel",
-      passiveIncomeLevel,
-      "PassiveIncome:",
-      passiveIncome
-    );
+    // console.log(
+    //   //                         **********************
+    //   "PassiveIncomePerLevel",
+    //   passiveIncomePerLevel,
+    //   "PassiveIncomeLevel",
+    //   passiveIncomeLevel,
+    //   "PassiveIncome:",
+    //   passiveIncome
+    // );
 
     // Display
     balanceEl.textContent = currentTimeObj.balance.toFixed(6);
