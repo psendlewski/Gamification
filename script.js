@@ -364,18 +364,13 @@ let pastTimeObj = {};
 // Balance Calc Function ========
 
 function balanceCalc(pastTimeObj, currentTimeObj) {
-  // console.log("pastTimeObj", pastTimeObj, "currentTimeObj", currentTimeObj);//                         **********************
-  // Load Objects
-
   // Calculate Time Difference in seconds
   let pastTimeDays = 0;
   for (let i = 0; i < pastTimeObj.month - 1; i++) {
     pastTimeDays += monthDays[i];
   }
   pastTimeDays += pastTimeObj.day - 1;
-
-  let pastTimeSeconds;
-  pastTimeSeconds += pastTimeDays * 24 * 60 * 60;
+  let pastTimeSeconds = pastTimeDays * 24 * 60 * 60;
   pastTimeSeconds += pastTimeObj.hour * 60 * 60;
   pastTimeSeconds += pastTimeObj.minute * 60;
   pastTimeSeconds += pastTimeObj.second;
@@ -385,43 +380,39 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
     currentTimeDays += monthDays[i];
   }
   currentTimeDays += currentTimeObj.day - 1;
-
-  let currentTimeSeconds;
-  currentTimeSeconds += currentTimeDays * 24 * 60 * 60;
+  let currentTimeSeconds = currentTimeDays * 24 * 60 * 60;
   currentTimeSeconds += currentTimeObj.hour * 60 * 60;
   currentTimeSeconds += currentTimeObj.minute * 60;
   currentTimeSeconds += currentTimeObj.second;
   // Calculate the difference
   let difference = currentTimeSeconds - pastTimeSeconds;
 
-  // console.log("Old balance:", currentTimeObj.balance); //                         **********************
-  // console.log(
-  //   "passiveIncome:",
-  //   passiveIncome,
-  //   "PassiveIncomePerSec",
-  //   passiveIncomePerSec
-  // );
+  console.log("Old balance:", currentTimeObj.balance); //                         **********************
+  console.log(
+    "passiveIncome:",
+    passiveIncome,
+    "PassiveIncomePerSec",
+    passiveIncomePerSec
+  );
   // Add Profit
-  currentTimeObj.balance = pastTimeObj.balance;
-  currentTimeObj.balance += difference * (passiveIncomePerSec / 2);
+  currentTimeObj.balance =
+    pastTimeObj.balance + difference * (passiveIncomePerSec / 2);
   currentTimeObj.balance += passiveIncomePerSec / 2;
 
   // Save new balance
   window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
 
-  // console.log("New balance:", currentTimeObj.balance); //                         **********************
+  console.log("New balance:", currentTimeObj.balance); //                         **********************
   console.log(
     "Current Time Seconds:",
     currentTimeSeconds,
     "Past Time Seconds",
-    pastTimeSeconds
+    pastTimeSeconds,
+    "Difference:",
+    difference,
+    "Local Storage- pastTimeObj",
+    window.localStorage.getItem("pastTimeObj")
   );
-  // console.log(//                                                                **********************
-  //   "Difference:",
-  //   difference,
-  //   "Local Storage- pastTimeObj",
-  //   window.localStorage.getItem("pastTimeObj")
-  // );
 
   // Display Balance
   if (currentTimeObj.balance) {
@@ -433,24 +424,9 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
 
 // Load Past Time Object from local memory
 function loadPastTimeObj() {
-  // Current Time Object Balance
-  if (!currentTimeObj.balance && window.localStorage.getItem("pastTimeObj")) {
-    let newTimeObject = window.localStorage.getItem("pastTimeObj");
-    pastTimeObj = JSON.parse(newTimeObject);
-    if (pastTimeObj.balance) {
-      currentTimeObj.balance = pastTimeObj.balance;
-    } else {
-      currentTimeObj.balance = parseInt(prompt("Enter a starting balance"));
-      pastTimeObj.balance = currentTimeObj.balance;
-      window.localStorage.setItem(
-        "pastTimeObj",
-        JSON.stringify(currentTimeObj)
-      );
-    }
-  }
-
   if (window.localStorage.getItem("pastTimeObj")) {
     let newTimeObject = window.localStorage.getItem("pastTimeObj");
+
     pastTimeObj = JSON.parse(newTimeObject);
     if (
       !pastTimeObj.month ||
@@ -468,8 +444,15 @@ function loadPastTimeObj() {
       };
       if (!pastTimeObj.balance && currentTimeObj.balance) {
         pastTimeObj.balance = currentTimeObj.balance;
+      } else {
+        currentTimeObj.balance = parseInt(prompt("Enter a starting balance"));
+        pastTimeObj.balance = currentTimeObj.balance;
+        window.localStorage.setItem(
+          "pastTimeObj",
+          JSON.stringify(currentTimeObj)
+        );
+        updateProgressBar();
       }
-      updateProgressBar();
     }
   } else {
     console.log("loadPastTimeObj - else"); //                         **********************
@@ -480,10 +463,6 @@ function loadPastTimeObj() {
     pastTimeObj.second = currentTimeObj.second;
     if (currentTimeObj.balance) {
       pastTimeObj.balance = currentTimeObj.balance;
-      window.localStorage.setItem(
-        "pastTimeObj",
-        JSON.stringify(currentTimeObj)
-      );
     } else {
       currentTimeObj.balance = parseInt(prompt("Enter a starting balance"));
       pastTimeObj.balance = currentTimeObj.balance;
@@ -491,7 +470,7 @@ function loadPastTimeObj() {
         "pastTimeObj",
         JSON.stringify(currentTimeObj)
       );
-      // console.log("Created new PastTimeObj"); //                         **********************
+      console.log("Created new PastTimeObj"); //                         **********************
       updateProgressBar();
     }
   }
@@ -544,6 +523,7 @@ upgradeBtnEl.addEventListener("click", () => {
   // Change and export Balance
   if (currentTimeObj.balance >= upgradeCost) {
     currentTimeObj.balance -= upgradeCost;
+    pastTimeObj.balance = currentTimeObj.balance;
     window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
     console.log(window.localStorage.getItem("pastTimeObj")); //                         **********************
 
@@ -575,25 +555,6 @@ upgradeBtnEl.addEventListener("click", () => {
   }
 });
 
-// Initial Function Calls
-loadPastTimeObj();
-loadPassiveIncome();
-balanceCalc(pastTimeObj, currentTimeObj);
-updateProgressBar();
-
-// Initial Console.logs
-console.log("Initial Console.log:");
-console.log(
-  "Local Memory- Past Time Object:",
-  window.localStorage.getItem("pastTimeObj")
-);
-console.log("Past Time Object:", pastTimeObj);
-console.log("Current Time Object:", currentTimeObj);
-
-console.log(
-  "Local Memory- Passive Income Level:",
-  window.localStorage.getItem("passiveIncomeLevel")
-);
 // Function calls on interval
 setInterval(() => {
   loadPastTimeObj();
