@@ -1,5 +1,7 @@
 // Up/Down Buttons
 "use strict";
+let viewportWidth;
+
 const freeTimeEl = document.querySelector("#free-time");
 const studyingEl = document.querySelector("#studying");
 
@@ -27,7 +29,7 @@ const progressBarEl = document.querySelector("#progress-bar");
 const expEl = document.querySelector(".exp");
 
 let upgradeCost = 20;
-let progressBarWidth = 200;
+let progressBarWidth;
 
 let freeTime = 0;
 let studying = 0;
@@ -284,13 +286,19 @@ const currentDate = new Date();
 let balance;
 
 function loadPassiveIncome() {
-  if (window.localStorage.getItem("passiveIncome")) {
-    passiveIncome = parseInt(window.localStorage.getItem("passiveIncome"));
+  if (window.localStorage.getItem("passiveIncomeLevel")) {
+    // console.log(
+    //   "local storage passive income",
+    //   window.localStorage.getItem("passiveIncomeLevel")
+    // );
+    passiveIncomeLevel = window.localStorage.getItem("passiveIncomeLevel");
+    passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
+    console.log(passiveIncome);
   } else {
-    console.log(
-      "PassiveIncomeLoadFailed",
-      window.localStorage.getItem("passiveIncome")
-    );
+    // console.log(
+    //   "PassiveIncomeLoadFailed",
+    //   window.localStorage.getItem("passiveIncome")
+    // );
     passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
     window.localStorage.setItem("passiveIncome", JSON.stringify(passiveIncome));
   }
@@ -315,8 +323,13 @@ function loadPassiveIncome() {
       JSON.stringify(passiveIncomeLevel)
     );
   }
-  // console.log("PassiveIncome", passiveIncome);
-  // console.log("PassiveIncomeLevel", passiveIncomeLevel);
+  if (passiveIncomeLevel) {
+    // console.log(passiveIncome);
+    levelEl.textContent = passiveIncomeLevel;
+    incomeEl.textContent = `€${passiveIncome.toFixed(2)}/d`;
+    // console.log("PassiveIncome", passiveIncome);
+    // console.log("PassiveIncomeLevel", passiveIncomeLevel);
+  }
 }
 
 // Passive Income
@@ -327,7 +340,6 @@ if (window.localStorage.getItem("passiveIncomeLevel"))
     window.localStorage.getItem("passiveIncomeLevel")
   );
 let passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
-console.log(passiveIncome);
 
 loadPassiveIncome();
 let passiveIncomePerSec = passiveIncome / 24 / 60 / 60;
@@ -393,18 +405,14 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
   //   difference
   // );
 
-  // Display Balance and passive income
+  // Display Balance
   if (currentTimeObj.balance) {
     balanceEl.textContent = currentTimeObj.balance.toFixed(6);
-    expEl.textContent = currentTimeObj.balance.toFixed(1);
-  }
-  if (passiveIncomeLevel) {
-    console.log(passiveIncome);
-    levelEl.textContent = passiveIncomeLevel;
-    incomeEl.textContent = passiveIncome.toFixed(1);
+    expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
   }
   return currentTimeObj.balance;
 }
+
 // Load Past Time Object from local memory
 function loadPastTimeObj() {
   if (window.localStorage.getItem("pastTimeObject")) {
@@ -471,8 +479,17 @@ function loadPastTimeObj() {
   // console.log("new time object", newTimeObject);
 }
 
+function checkViewportWidth() {
+  viewportWidth = window.innerWidth;
+  if (viewportWidth < 690) {
+    progressBarWidth = 100;
+  } else {
+    progressBarWidth = 200;
+  }
+}
 // Progress Bar
 function updateProgressBar() {
+  checkViewportWidth();
   if (currentTimeObj.balance) {
     expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
     let width = progressBarWidth * (currentTimeObj.balance / upgradeCost);
@@ -519,13 +536,9 @@ upgradeBtnEl.addEventListener("click", () => {
 
     // Display
     balanceEl.textContent = currentTimeObj.balance.toFixed(6);
-    expEl.textContent = currentTimeObj.balance.toFixed(1);
+    expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
     levelEl.textContent = passiveIncomeLevel;
-    if (passiveIncome % 1 === 0) {
-      incomeEl.textContent = `€${passiveIncome.toFixed(1)}/d`;
-    } else {
-      incomeEl.textContent = `€${passiveIncome.toFixed(1)}0/d`;
-    }
+    incomeEl.textContent = `€${passiveIncome.toFixed(2)}/d`;
   }
 });
 
