@@ -1,5 +1,6 @@
 // Up/Down Buttons
 "use strict";
+
 let viewportWidth;
 
 const freeTimeEl = document.querySelector("#free-time");
@@ -31,26 +32,8 @@ const expEl = document.querySelector(".exp");
 let upgradeCost = 20;
 let progressBarWidth;
 
-let freeTime = 0;
-let studying = 0;
-
-ftBtnUpEl.addEventListener("click", () => {
-  freeTime++;
-  freeTimeEl.textContent = freeTime;
-});
-
-ftBtnDownEl.addEventListener("click", () => {
-  if (freeTime >= 1 && freeTime > studying) freeTime--;
-  freeTimeEl.textContent = freeTime;
-});
-sBtnUpEl.addEventListener("click", () => {
-  if (studying < freeTime) studying++;
-  studyingEl.textContent = studying;
-});
-sBtnDownEl.addEventListener("click", () => {
-  if (studying >= 1) studying--;
-  studyingEl.textContent = studying;
-});
+let freeTime;
+let studying;
 
 // Date
 let dayNr;
@@ -86,6 +69,59 @@ const currentYear = currentDate.getFullYear();
 const currentMonth = currentDate.getMonth();
 const currentDay = currentDate.getDate();
 
+// let balance;
+let balance;
+
+let currentTimeObj = {
+  month: currentDate.getMonth(),
+  day: currentDate.getDate(),
+  hour: currentDate.getHours(),
+  minute: currentDate.getMinutes(),
+  second: currentDate.getSeconds(),
+  balance,
+};
+let pastTimeObj = {};
+
+loadCalendarDayDataObject();
+
+ftBtnUpEl.addEventListener("click", () => {
+  freeTime++;
+  freeTimeEl.textContent = freeTime;
+});
+
+ftBtnDownEl.addEventListener("click", () => {
+  if (freeTime >= 1 && freeTime > studying) freeTime--;
+  freeTimeEl.textContent = freeTime;
+});
+sBtnUpEl.addEventListener("click", () => {
+  if (studying < freeTime) studying++;
+  studyingEl.textContent = studying;
+});
+sBtnDownEl.addEventListener("click", () => {
+  if (studying >= 1) studying--;
+  studyingEl.textContent = studying;
+});
+
+function loadCalendarDayDataObject() {
+  currentFullDate = `${currentYear}-${currentMonth + 1}-${currentDay}`;
+
+  // Load Data from Local Storage & Set Freetime and Studying Variable
+  currentDayCalendarData = JSON.parse(
+    window.localStorage.getItem(`${currentFullDate}`)
+  );
+  freeTime =
+    currentDayCalendarData && currentDayCalendarData.freeTime
+      ? currentDayCalendarData.freeTime
+      : 0;
+  studying =
+    currentDayCalendarData && currentDayCalendarData.studying
+      ? currentDayCalendarData.studying
+      : 0;
+
+  // Display FreeTime & Studying
+  freeTimeEl.textContent = freeTime;
+  studyingEl.textContent = studying;
+}
 function createCalendarDayDataObject() {
   // Get current Date
   currentFullDate = `${currentYear}-${currentMonth + 1}-${currentDay}`;
@@ -395,6 +431,8 @@ saveBtnEl.addEventListener("click", () => {
 
   // Save New Balance in Local Storage
   window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
+  // console.log(window.localStorage.getItem("pastTimeObj")); //********************************* */
+
   // Change Border Color depending on productivity
   productivity =
     studying && freeTime ? ((studying / freeTime) * 100).toFixed(0) : 0;
@@ -430,8 +468,6 @@ saveBtnEl.addEventListener("click", () => {
 const balanceEl = document.querySelector("#balance");
 
 let monthDays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-let balance;
 
 function loadPassiveIncome() {
   if (window.localStorage.getItem("passiveIncomeLevel")) {
@@ -499,16 +535,6 @@ let passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
 loadPassiveIncome();
 let passiveIncomePerSec = passiveIncome / 24 / 60 / 60;
 
-let currentTimeObj = {
-  month: currentDate.getMonth(),
-  day: currentDate.getDate(),
-  hour: currentDate.getHours(),
-  minute: currentDate.getMinutes(),
-  second: currentDate.getSeconds(),
-  balance,
-};
-let pastTimeObj = {};
-
 // Balance Calc Function ========
 
 function balanceCalc(pastTimeObj, currentTimeObj) {
@@ -572,56 +598,23 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
 
 // Load Past Time Object from local memory
 function loadPastTimeObj() {
-  if (window.localStorage.getItem("pastTimeObj")) {
-    let newTimeObject = window.localStorage.getItem("pastTimeObj");
-
-    pastTimeObj = JSON.parse(newTimeObject);
-    if (
-      !pastTimeObj.month ||
-      !pastTimeObj.day ||
-      !pastTimeObj.hour ||
-      !pastTimeObj.minute ||
-      !pastTimeObj.second
-    ) {
-      pastTimeObj = {
-        month: currentTimeObj.month,
-        day: currentTimeObj.day,
-        hour: currentTimeObj.hour,
-        minute: currentTimeObj.minute,
-        second: currentTimeObj.second,
-      };
-      if (!pastTimeObj.balance && currentTimeObj.balance) {
-        pastTimeObj.balance = currentTimeObj.balance;
-      } else {
-        currentTimeObj.balance = parseInt(prompt("Enter a starting balance"));
-        pastTimeObj.balance = currentTimeObj.balance;
-        window.localStorage.setItem(
-          "pastTimeObj",
-          JSON.stringify(currentTimeObj)
-        );
-        updateProgressBar();
-      }
-    }
+  if (!window.localStorage.getItem("pastTimeObj")) {
+    currentTimeObj.balance = parseInt(prompt("Enter a starting balance"));
+    pastTimeObj = currentTimeObj;
+    window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
   } else {
-    console.log("loadPastTimeObj - else"); //                         **********************
-    pastTimeObj.month = currentTimeObj.month;
-    pastTimeObj.day = currentTimeObj.day;
-    pastTimeObj.hour = currentTimeObj.hour;
-    pastTimeObj.minute = currentTimeObj.minute;
-    pastTimeObj.second = currentTimeObj.second;
-    if (currentTimeObj.balance) {
-      pastTimeObj.balance = currentTimeObj.balance;
-    } else {
-      currentTimeObj.balance = parseInt(prompt("Enter a starting balance"));
-      pastTimeObj.balance = currentTimeObj.balance;
-      window.localStorage.setItem(
-        "pastTimeObj",
-        JSON.stringify(currentTimeObj)
-      );
-      // console.log("Created new PastTimeObj"); //                         **********************
-      updateProgressBar();
-    }
+    let newTimeObject = window.localStorage.getItem("pastTimeObj");
+    pastTimeObj = JSON.parse(newTimeObject);
   }
+  if (!pastTimeObj.balance && currentTimeObj.balance) {
+    pastTimeObj.balance = currentTimeObj.balance;
+  } else if (!pastTimeObj.balance && !currentTimeObj.balance) {
+    currentTimeObj.balance = parseInt(prompt("Enter a starting balance"));
+    pastTimeObj.balance = currentTimeObj.balance;
+    window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
+  }
+  updateProgressBar();
+
   // Load Passive Income
   if (window.localStorage.getItem("passiveIncomeLevel")) {
     passiveIncomeLevel = parseInt(
@@ -635,11 +628,10 @@ function loadPastTimeObj() {
       JSON.stringify(passiveIncomeLevel)
     );
   }
-
-  // console.log("pastTimeObj", pastTimeObj);//                         **********************
-  // console.log("currentTimeObj", currentTimeObj);
-  // console.log("new time object", newTimeObject);
 }
+
+// console.log("pastTimeObj", pastTimeObj); //                         **********************
+// console.log("currentTimeObj", currentTimeObj);
 
 function checkViewportWidth() {
   viewportWidth = window.innerWidth;
