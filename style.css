@@ -2,7 +2,7 @@
   body {
     background-image: url("bg.jpg");
     background-size: cover;
-    height: 800px;
+    height: 1000px;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -14,7 +14,7 @@
   #container {
     position: absolute;
     width: 900px;
-    height: 800px;
+    height: 900px;
     border: 5px solid black;
     background-color: black;
     border-radius: 20px;
@@ -148,7 +148,7 @@
 
   #day {
     font-size: 50px;
-    padding-top: 20px;
+    padding-top: 30px;
   }
   #month {
     font-size: 20px;
@@ -311,19 +311,60 @@
     font-weight: 500;
 
     color: rgb(245, 215, 138);
-    text-decoration: underline black 2px;
   }
   .red {
-    border: 2px solid red;
+    border: 2px dotted #ff4136;
+    box-sizing: border-box;
   }
   .orange {
-    border: 2px solid orange;
+    border: 2px dotted #ff851b;
+    box-sizing: border-box;
   }
   .yellow {
-    border: 2px solid yellow;
+    border: 2px dotted #ffdc00;
+    box-sizing: border-box;
   }
   .green {
-    border: 2px solid rgb(51, 236, 51);
+    border: 2px dotted #01ff70;
+    box-sizing: border-box;
+  }
+  #months {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    width: 900px;
+    height: 180px;
+    top: 430px;
+    border-radius: 10px 10px 20px 20px;
+    box-shadow: 5px 5px 5px #252525;
+    background-color: #111111;
+    z-index: 1;
+    color: aliceblue;
+  }
+  .month {
+    width: 130px;
+    height: 80px;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #000000;
+  }
+  .bonus {
+    color: #aaaaaa;
+    font-weight: 500;
+  }
+  .text-red {
+    color: #ff4136;
+  }
+  .text-orange {
+    color: #ff851b;
+  }
+  .text-yellow {
+    color: #ffdc00;
+  }
+  .text-green {
+    color: #01ff70;
   }
 }
 @keyframes light-up {
@@ -498,7 +539,7 @@
 
   #day {
     font-size: 12vw;
-    padding-top: 4vw;
+    padding-top: 6vw;
   }
   #month {
     font-size: 5vw;
@@ -605,7 +646,7 @@
     text-align: center;
     position: absolute;
     width: 98vw;
-    height: 110vw;
+    height: 106vw;
     top: 55vw;
     border-radius: 10px;
     box-shadow: 5px 5px 5px #252525;
@@ -642,11 +683,12 @@
     text-align: center;
     margin: 0;
     padding: 0;
+    height: 3vw;
   }
   .weekdays {
     width: 14vw;
-    height: 4vw;
-    font-size: 2.5vw;
+    height: 2vw;
+    font-size: 3vw;
   }
   #day-numbers {
     display: flex;
@@ -665,19 +707,60 @@
     font-weight: 500;
 
     color: rgb(245, 215, 138);
-    text-decoration: underline black 2px;
   }
   .red {
-    border: 2px solid red;
+    border: 2px dotted #ff4136;
+    box-sizing: border-box;
   }
   .orange {
-    border: 2px solid orange;
+    border: 2px dotted #ff851b;
+    box-sizing: border-box;
   }
   .yellow {
-    border: 2px solid yellow;
+    border: 2px dotted #ffdc00;
+    box-sizing: border-box;
   }
   .green {
-    border: 2px solid rgb(51, 236, 51);
+    border: 2px dotted #01ff70;
+    box-sizing: border-box;
+  }
+  #months {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    position: absolute;
+    width: 98vw;
+    height: 45vw;
+    top: 108vw;
+    border-radius: 10px 10px 20px 20px;
+    box-shadow: 5px 5px 5px #252525;
+    background-color: #111111;
+    z-index: 1;
+    color: aliceblue;
+  }
+  .month {
+    width: 16vw;
+    height: 20vw;
+    text-align: center;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #000000;
+  }
+  .bonus {
+    color: #aaaaaa;
+    font-weight: 500;
+  }
+  .text-red {
+    color: #ff4136;
+  }
+  .text-orange {
+    color: #ff851b;
+  }
+  .text-yellow {
+    color: #ffdc00;
+  }
+  .text-green {
+    color: #01ff70;
   }
 }
 @keyframes light-up {

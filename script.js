@@ -122,6 +122,36 @@ function loadCalendarDayDataObject() {
   freeTimeEl.textContent = freeTime;
   studyingEl.textContent = studying;
 }
+// Testing Data for createCalendarDayDataObject
+let randomDayData = Math.floor(Math.random() * 10) + 1;
+
+// function testingDayData() {
+//   let currentDayDataObject = {};
+
+//   let year = currentYear;
+//   let month = currentMonth;
+//   let day = currentDay;
+
+//   for (let i = 1; i < currentDay; i++) {
+//     let currentFullDate = `${currentYear}-${currentMonth + 1}-${i}`;
+
+//     currentDayDataObject.freeTime = randomDayData;
+//     randomDayData = Math.floor(Math.random() * 10);
+//     currentDayDataObject.studying = randomDayData / 2 + 1;
+//     currentDayDataObject.productivity = (
+//       (currentDayDataObject.studying / currentDayDataObject.freeTime) *
+//       100
+//     ).toFixed(0);
+
+//     window.localStorage.setItem(
+//       `${currentFullDate}`,
+//       JSON.stringify(currentDayDataObject)
+//     );
+//     console.log(currentFullDate, currentDayDataObject);
+//   }
+// }
+// testingDayData();
+
 function createCalendarDayDataObject() {
   // Get current Date
   currentFullDate = `${currentYear}-${currentMonth + 1}-${currentDay}`;
@@ -599,7 +629,7 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
 
   // Display Balance
   if (currentTimeObj.balance) {
-    balanceEl.textContent = currentTimeObj.balance.toFixed(6);
+    balanceEl.textContent = `€${currentTimeObj.balance.toFixed(6)}`;
     expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
   }
   return currentTimeObj.balance;
@@ -703,7 +733,7 @@ upgradeBtnEl.addEventListener("click", () => {
     // );
 
     // Display
-    balanceEl.textContent = currentTimeObj.balance.toFixed(6);
+    balanceEl.textContent = `€${currentTimeObj.balance.toFixed(6)}`;
     expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
     levelEl.textContent = passiveIncomeLevel;
     incomeEl.textContent = `€${passiveIncome.toFixed(2)}/d`;
