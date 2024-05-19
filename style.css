@@ -148,7 +148,7 @@
 
   #day {
     font-size: 50px;
-    padding-top: 30px;
+    padding-top: 10px;
   }
   #month {
     font-size: 20px;
@@ -326,7 +326,12 @@
   }
   .green {
     border: 2px dotted #01ff70;
+
     box-sizing: border-box;
+  }
+  #bonusValue {
+    font-size: 20px;
+    font-weight: 500;
   }
   #months {
     display: flex;
@@ -352,10 +357,11 @@
   }
   .bonus {
     color: #aaaaaa;
+    font-size: 14px;
     font-weight: 500;
   }
-  .text-red {
-    color: #ff4136;
+  .text-grey {
+    color: #aaaaaa;
   }
   .text-orange {
     color: #ff851b;
@@ -364,7 +370,7 @@
     color: #ffdc00;
   }
   .text-green {
-    color: #01ff70;
+    color: #2ecc40;
   }
 }
 @keyframes light-up {
@@ -538,11 +544,11 @@
   }
 
   #day {
-    font-size: 12vw;
-    padding-top: 6vw;
+    font-size: 10vw;
+    padding-top: 3vw;
   }
   #month {
-    font-size: 5vw;
+    font-size: 4vw;
   }
   #upgrade-btn {
     position: absolute;
@@ -723,6 +729,7 @@
   .green {
     border: 1px dotted #01ff70;
     box-sizing: border-box;
+    font-weight: 1000;
   }
   #months {
     display: flex;
@@ -749,9 +756,10 @@
   .bonus {
     color: #aaaaaa;
     font-weight: 500;
+    font-size: 2.8vw;
   }
-  .text-red {
-    color: #ff4136;
+  .text-grey {
+    color: #aaaaaa;
   }
   .text-orange {
     color: #ff851b;
@@ -760,7 +768,9 @@
     color: #ffdc00;
   }
   .text-green {
-    color: #01ff70;
+    color: #2ecc40;
+    font-size: 3.5vw;
+    padding-top: 1vw;
   }
 }
 @keyframes light-up {

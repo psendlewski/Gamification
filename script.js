@@ -54,12 +54,15 @@ let currentDayEl;
 // Productivity
 let incomePerStudyingHour = 1;
 let productivity;
-let productivityBonusPerSec;
+let productivityBonus;
+let productivityBonusCounter = 0;
 let totalIncomeForStudying;
 let currentIncomeForStudying;
 let oldIncomeForStudying;
 let incomeForStudyingDifference;
 let productivityColor;
+
+const bonusValueEl = document.querySelector("#bonusValue");
 
 // Create Current Day Data Object ===============================
 let currentDayCalendarData;
@@ -570,7 +573,7 @@ let passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
 loadPassiveIncome();
 let passiveIncomePerSec = passiveIncome / 24 / 60 / 60;
 
-// ==============================Balance Calc Function ==============================
+// ==================================================Balance Calc Function ================================================
 
 function balanceCalc(pastTimeObj, currentTimeObj) {
   // Update current Time
@@ -614,6 +617,32 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
   // );
 
   // Add Profit
+  let productivityBonusPerSecond;
+  if (productivityBonus > 0) {
+    productivityBonusPerSecond =
+      (productivityBonus * passiveIncome) / 24 / 60 / 12;
+  } else {
+    productivityBonusPerSecond = 0;
+  }
+  // console.log( //                                  **********************
+  //   "productivityBonus",
+  //   productivityBonus,
+  //   "passiveIncome",
+  //   passiveIncome,
+  //   "productivityBonusPerSecond",
+  //   productivityBonusPerSecond
+  // );
+
+  // console.log(productivityBonusCounter); //                    *************************
+
+  if (productivityBonusCounter >= 9) {
+    productivityBonusCounter = 0;
+    currentTimeObj.balance += productivityBonusPerSecond;
+    console.log("productivity Bonus add!");
+  }
+
+  productivityBonusCounter++;
+
   currentTimeObj.balance =
     pastTimeObj.balance + difference * (passiveIncomePerSec / 2);
 
@@ -753,22 +782,37 @@ function calcProductivityBonus() {
   let startingDay = currentDay > 7 ? currentDay - 7 : 1;
   let bonusSum = 0;
   let bonusAverage;
+  let productivity;
 
   for (let i = 0; i < 7; i++) {
     loopFullDate = `${currentYear}-${currentMonth + 1}-${startingDay + i}`;
     loopDataObject = JSON.parse(window.localStorage.getItem(loopFullDate));
+    // console.log(i, loopDataObject); // **************************
+    if (loopDataObject && loopDataObject.studying && loopDataObject.freeTime) {
+      productivity = loopDataObject.studying / loopDataObject.freeTime;
+    } else {
+      productivity = 0;
+    }
 
-    bonusSum += loopDataObject.productivity.toFixed(1);
-    console.log("loopDataObject.productivity", loopDataObject.productivity);
+    bonusSum += productivity;
+    // console.log("bonusSum", bonusSum); //                    ***********************************
   }
-
   bonusAverage = bonusSum / 7;
-  productivityBonusPerSec = ((bonusAverage - 50) / 100) * passiveIncomePerSec;
+  productivityBonus = (bonusAverage - 0.5).toFixed(2);
 
-  console.log("startingDay", startingDay);
-  console.log("bonusAverage", bonusAverage);
-  console.log("bonusSum", bonusSum);
-  console.log("productivityBonusPerSec", productivityBonusPerSec); //                         ***********************
+  // console.log("passiveIncomePerSec", passiveIncomePerSec);
+  // console.log("productivity", productivity);
+  // console.log("startingDay", startingDay);
+  // console.log("bonusAverage", bonusAverage);
+  // console.log("bonusSum", bonusSum);
+  // console.log("productivityBonus", productivityBonus); //                         ***********************
+
+  // Display Bonus:
+  if (productivityBonus > 0) {
+    bonusValueEl.textContent = `+ ${productivityBonus * 100}%`;
+  } else {
+    bonusValueEl.textContent = `0%`;
+  }
 }
 
 // Function calls on interval
