@@ -64,10 +64,10 @@ let productivityColor;
 let currentDayCalendarData;
 let currentFullDate;
 
-const currentDate = new Date();
-const currentYear = currentDate.getFullYear();
-const currentMonth = currentDate.getMonth();
-const currentDay = currentDate.getDate();
+let currentDate = new Date();
+let currentYear = currentDate.getFullYear();
+let currentMonth = currentDate.getMonth();
+let currentDay = currentDate.getDate();
 
 // let balance;
 let balance;
@@ -535,9 +535,18 @@ let passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
 loadPassiveIncome();
 let passiveIncomePerSec = passiveIncome / 24 / 60 / 60;
 
-// Balance Calc Function ========
+// ==============================Balance Calc Function ==============================
 
 function balanceCalc(pastTimeObj, currentTimeObj) {
+  // Update current Time
+  currentDate = new Date();
+
+  currentTimeObj.month = currentDate.getMonth();
+  currentTimeObj.day = currentDate.getDate();
+  currentTimeObj.hour = currentDate.getHours();
+  currentTimeObj.minute = currentDate.getMinutes();
+  currentTimeObj.second = currentDate.getSeconds();
+
   // Calculate Time Difference in seconds
   let pastTimeDays = 0;
   for (let i = 0; i < pastTimeObj.month - 1; i++) {
@@ -568,10 +577,10 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
   //   "PassiveIncomePerSec",
   //   passiveIncomePerSec
   // );
+
   // Add Profit
   currentTimeObj.balance =
     pastTimeObj.balance + difference * (passiveIncomePerSec / 2);
-  currentTimeObj.balance += passiveIncomePerSec / 2;
 
   // Save new balance
   window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
