@@ -54,6 +54,7 @@ let currentDayEl;
 // Productivity
 let incomePerStudyingHour = 1;
 let productivity;
+let productivityBonusPerSec;
 let totalIncomeForStudying;
 let currentIncomeForStudying;
 let oldIncomeForStudying;
@@ -151,6 +152,8 @@ let randomDayData = Math.floor(Math.random() * 10) + 1;
 //   }
 // }
 // testingDayData();
+
+// =============================== Create Calendar Data For Each Single Day =====================================
 
 function createCalendarDayDataObject() {
   // Get current Date
@@ -311,7 +314,7 @@ function fetchData() {
       let currentLoopDate;
       let currentDayLoopObject;
 
-      // ===================================Building the Calendar ========================================================
+      // ===================================Building the Month Calendar ========================================================
 
       // Skip first days
       if (skipFirstDays > 0) {
@@ -433,6 +436,8 @@ function fetchData() {
       dayNrId = `#d${dayNr + skipFirstDays}`;
       currentDayEl = document.querySelector(dayNrId);
       currentDayEl.classList.add("act-day");
+
+      // ===================================Building the Year Calendar ========================================================
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
@@ -680,7 +685,7 @@ function checkViewportWidth() {
     progressBarWidth = 200;
   }
 }
-// Progress Bar
+// =================Progress Bar====================
 function updateProgressBar() {
   checkViewportWidth();
   let width;
@@ -703,7 +708,7 @@ function updateProgressBar() {
   }
 }
 
-// Upgrade Button
+// ================================Upgrade Button================================
 upgradeBtnEl.addEventListener("click", () => {
   // Change and export Balance
   if (currentTimeObj.balance >= upgradeCost) {
@@ -739,11 +744,38 @@ upgradeBtnEl.addEventListener("click", () => {
     incomeEl.textContent = `€${passiveIncome.toFixed(2)}/d`;
   }
 });
+// ================================Calculate Productivity Bonus================================
+function calcProductivityBonus() {
+  let loopFullDate;
+  let loopDataObject;
+
+  // Calculate Bonus
+  let startingDay = currentDay > 7 ? currentDay - 7 : 1;
+  let bonusSum = 0;
+  let bonusAverage;
+
+  for (let i = 0; i < 7; i++) {
+    loopFullDate = `${currentYear}-${currentMonth + 1}-${startingDay + i}`;
+    loopDataObject = JSON.parse(window.localStorage.getItem(loopFullDate));
+
+    bonusSum += loopDataObject.productivity.toFixed(1);
+    console.log("loopDataObject.productivity", loopDataObject.productivity);
+  }
+
+  bonusAverage = bonusSum / 7;
+  productivityBonusPerSec = ((bonusAverage - 50) / 100) * passiveIncomePerSec;
+
+  console.log("startingDay", startingDay);
+  console.log("bonusAverage", bonusAverage);
+  console.log("bonusSum", bonusSum);
+  console.log("productivityBonusPerSec", productivityBonusPerSec); //                         ***********************
+}
 
 // Function calls on interval
 setInterval(() => {
   loadPastTimeObj();
   loadPassiveIncome();
+  calcProductivityBonus();
   balanceCalc(pastTimeObj, currentTimeObj);
   updateProgressBar();
 }, 500);

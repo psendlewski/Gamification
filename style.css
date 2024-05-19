@@ -688,7 +688,7 @@
   .weekdays {
     width: 14vw;
     height: 2vw;
-    font-size: 3vw;
+    font-size: 2.5vw;
   }
   #day-numbers {
     display: flex;
@@ -709,19 +709,19 @@
     color: rgb(245, 215, 138);
   }
   .red {
-    border: 2px dotted #ff4136;
+    border: 1px dotted #ff4136;
     box-sizing: border-box;
   }
   .orange {
-    border: 2px dotted #ff851b;
+    border: 1px dotted #ff851b;
     box-sizing: border-box;
   }
   .yellow {
-    border: 2px dotted #ffdc00;
+    border: 1px dotted #ffdc00;
     box-sizing: border-box;
   }
   .green {
-    border: 2px dotted #01ff70;
+    border: 1px dotted #01ff70;
     box-sizing: border-box;
   }
   #months {
