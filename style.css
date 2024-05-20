@@ -275,7 +275,7 @@
     height: 75px;
     text-align: center;
     border-radius: 5px;
-    box-shadow: 0px 0px 10px rgb(218, 144, 32);
+    box-shadow: 0px 0px 15px rgb(226, 226, 226);
   }
   .inact-day {
     width: 120px;
@@ -309,8 +309,7 @@
     margin: 3px 7px;
     font-size: 13px;
     font-weight: 500;
-
-    color: rgb(245, 215, 138);
+    color: #aaaaaa;
   }
   .red {
     border: 2px dotted #ff4136;
@@ -354,7 +353,15 @@
     text-align: center;
     border-radius: 5px;
     box-shadow: 5px 5px 5px #000000;
+    font-size: 14px;
   }
+  .month p {
+    text-align: left;
+    margin: 5px 10px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
   .bonus {
     color: #aaaaaa;
     font-size: 14px;
@@ -673,7 +680,7 @@
     height: 20vw;
     text-align: center;
     border-radius: 5px;
-    box-shadow: 0px 0px 10px rgb(218, 144, 32);
+    box-shadow: 0px 0px 10px rgb(226, 226, 226);
   }
   .inact-day {
     width: 13vw;
@@ -708,11 +715,11 @@
   }
   #day-numbers p {
     text-align: left;
-    margin: 2vw 1vw;
+    margin: 1.5vw 1vw;
     font-size: 2.7vw;
     font-weight: 500;
 
-    color: rgb(245, 215, 138);
+    color: #aaaaaa;
   }
   .red {
     border: 1px dotted #ff4136;
@@ -749,14 +756,22 @@
   .month {
     width: 16vw;
     height: 20vw;
-    text-align: center;
     border-radius: 5px;
     box-shadow: 5px 5px 5px #000000;
+    font-size: 2.5vw;
+  }
+  .month p {
+    text-align: left;
+    margin: 2vw 2vw;
+    font-size: 2.7vw;
+    font-weight: 500;
   }
   .bonus {
     color: #aaaaaa;
     font-weight: 500;
     font-size: 2.8vw;
+    margin: 0;
+    padding: 0;
   }
   .text-grey {
     color: #aaaaaa;
