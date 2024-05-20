@@ -788,7 +788,7 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
   if (productivityBonusCounter >= 9) {
     productivityBonusCounter = 0;
     currentTimeObj.balance += productivityBonusPerSecond;
-    console.log("productivity Bonus add!");
+    // console.log("productivity Bonus add!");
   }
 
   productivityBonusCounter++;
