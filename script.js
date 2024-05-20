@@ -307,299 +307,307 @@ let currentDayLoopObject;
 // ===================================Building the Month Calendar ========================================================
 
 // Skip first days
-if (skipFirstDays > 0) {
-  for (let i = 0; i < skipFirstDays; i++) {
+function buildCalendars() {
+  // Remove all elements in #Months div
+  for (let i = 0; i < 12; i++) {
+    if (monthsEl.firstChild) monthsEl.firstChild.remove();
+  }
+
+  if (skipFirstDays > 0) {
+    for (let i = 0; i < skipFirstDays; i++) {
+      dayCounter++;
+      let inactiveDay = document.createElement("div");
+      inactiveDay.classList.add("inact-day");
+      inactiveDay.setAttribute("id", `d${dayCounter}`);
+      dayNumbersEl.appendChild(inactiveDay);
+    }
+  }
+
+  // Calendar days
+  for (let i = 0; i < daysInMonth; i++) {
     dayCounter++;
-    let inactiveDay = document.createElement("div");
-    inactiveDay.classList.add("inact-day");
-    inactiveDay.setAttribute("id", `d${dayCounter}`);
-    dayNumbersEl.appendChild(inactiveDay);
-  }
-}
 
-// Calendar days
-for (let i = 0; i < daysInMonth; i++) {
-  dayCounter++;
+    // Create Cal Day
+    let calDay = document.createElement("div");
+    calDay.classList.add("cal-day");
+    calDay.setAttribute("id", `d${dayCounter}`);
+    calDay.textContent = `${i + 1}`;
+    dayNumbersEl.appendChild(calDay);
+    // console.log(currentLoopDayCounter); //                                       ***************************
 
-  // Create Cal Day
-  let calDay = document.createElement("div");
-  calDay.classList.add("cal-day");
-  calDay.setAttribute("id", `d${dayCounter}`);
-  calDay.textContent = `${i + 1}`;
-  dayNumbersEl.appendChild(calDay);
-  // console.log(currentLoopDayCounter); //                                       ***************************
-
-  // Set Variables
-  currentLoopDayCounter = dayCounter - skipFirstDays;
-  currentLoopDayEl = document.querySelector(`#d${dayCounter}`);
-  // console.log(  //                                                ***************************************
-  //   "dayCounter",
-  //   dayCounter,
-  //   "currentLoopDayCounter",
-  //   currentLoopDayCounter
-  // );
-  currentLoopDate = `${currentYear}-${
-    currentMonth + 1
-  }-${currentLoopDayCounter}`;
-  // console.log(currentLoopDate); //               * ********************************
-  if (window.localStorage.getItem(`${currentLoopDate}`)) {
-    currentDayLoopObject = JSON.parse(
-      window.localStorage.getItem(`${currentLoopDate}`)
-    );
-  } else {
-    currentDayLoopObject = {
-      freeTime: 0,
-      studying: 0,
-      productivity: 0,
-    };
-  }
-
-  // console.log(
-  //   // ***********************************
-
-  //   "currentLoopDayEl",
-  //   currentLoopDayEl,
-  //   "currentLoopDate",
-  //   currentLoopDate,
-  //   "currentDayLoopObject",
-  //   currentDayLoopObject
-  // );
-  //Add Text to Current Day
-  let ft = document.createElement("p");
-  let s = document.createElement("p");
-  let p = document.createElement("p");
-  // Productivity and color
-
-  if (currentDayLoopObject) {
-    if (currentDayLoopObject.studying / currentDayLoopObject.freeTime < 0.5) {
-      productivityColor = "red";
-    } else if (
-      currentDayLoopObject.studying / currentDayLoopObject.freeTime <
-      0.6
-    ) {
-      productivityColor = "orange";
-    } else if (
-      currentDayLoopObject.studying / currentDayLoopObject.freeTime <
-      0.7
-    ) {
-      productivityColor = "yellow";
-    } else {
-      productivityColor = "green";
-    }
-  }
-  // console.log(        //                                            *******************************
-  //   "currentDayLoopObject",
-  //   currentDayLoopObject,
-  //   "productivityColor",
-  //   productivityColor
-  // );
-
-  if (
-    !currentDayLoopObject ||
-    !currentDayLoopObject.freeTime ||
-    !currentDayLoopObject.studying ||
-    !currentDayLoopObject.productivity
-  ) {
-    ft.innerHTML = `FT: -`;
-    s.innerHTML = `S: -`;
-    p.innerHTML = `P: -`;
-    currentLoopDayEl.appendChild(ft);
-    currentLoopDayEl.appendChild(s);
-    currentLoopDayEl.appendChild(p);
-    currentLoopDayEl.classList.remove("red", "orange", "yellow", "green");
-  } else {
-    ft.innerHTML = `FT:   ${currentDayLoopObject.freeTime}h`;
-    s.innerHTML = `S:   ${currentDayLoopObject.studying}h`;
-    p.innerHTML = `P: ${currentDayLoopObject.productivity}%`;
-    currentLoopDayEl.appendChild(ft);
-    currentLoopDayEl.appendChild(s);
-    currentLoopDayEl.appendChild(p);
-    currentLoopDayEl.classList.remove("red", "orange", "yellow", "green");
-    currentLoopDayEl.classList.add(`${productivityColor}`);
-  }
-  // console.log("currentLoopDayEl.classList,", currentLoopDayEl.classList); //***************************** */
-}
-// Skip last days
-for (let i = 0; i < skipLastDays; i++) {
-  dayCounter++;
-  let inactDay = document.createElement("div");
-  inactDay.classList.add("inact-day");
-  inactDay.setAttribute("id", `d${dayCounter}`);
-  dayNumbersEl.appendChild(inactDay);
-}
-// light up a current day
-//**************************************** */
-dayNrId = `#d${dayNr + skipFirstDays}`;
-currentDayEl = document.querySelector(dayNrId);
-currentDayEl.classList.add("act-day");
-
-// ===================================Building the Year Calendar ========================================================
-let currentMonthName;
-let currentMonthEl;
-monthDays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-
-let currentMonthLoop;
-let currentDayLoop;
-
-let currentDateObject;
-let currentMonthDataObject = {
-  ft: 0,
-  s: 0,
-  p: 0,
-};
-let currentLoopFullDate;
-// Loop Through all Dates and Save Data to current Month
-
-for (let i = 0; i < 12; i++) {
-  currentMonthLoop = i;
-  // console.log("currentMonthLoop", currentMonthLoop); //            ********************
-  for (let j = 0; j < monthDays[j]; j++) {
-    // console.log("currentDayLoop", j); //            ********************
-    currentLoopFullDate = `${currentYear}-${currentMonthLoop + 1}-${j + 1}`;
-
-    if (window.localStorage.getItem(`${currentLoopFullDate}`)) {
-      // console.log(
-      //   "Current Date Loop Data Object",
-      //   window.localStorage.getItem(`${currentLoopFullDate}`) //                         ********************
-      // );
-      //Load Current Date Data Object
-      currentDateObject = JSON.parse(
-        window.localStorage.getItem(`${currentLoopFullDate}`)
-      );
-      // console.log("currentDateObject", currentDateObject); //                ********************
-      if (currentDateObject.freeTime || currentDateObject.studying) {
-        // Add Values To currentMonthDataObject
-        if (
-          currentDateObject.freeTime &&
-          currentDateObject.freeTime >= 1 &&
-          currentDateObject.freeTime < 24
-        )
-          currentMonthDataObject.ft += currentDateObject.freeTime;
-        // console.log("currentDateObject.freeTime", currentDateObject.freeTime); // ************
-        // console.log("currentMonthDataObject.ft ", currentMonthDataObject.ft); // ************
-        if (
-          currentDateObject.studying &&
-          currentDateObject.studying >= 1 &&
-          currentDateObject.studying < 24
-        )
-          currentMonthDataObject.s += currentDateObject.studying;
-      }
-    } else {
-      currentDateObject = {
-        studying: 0,
-        freeTime: 0,
-      };
-      // console.log("currentMonthDataObject", currentMonthDataObject);
-      // console.log("currentDateObject", currentDateObject);
-    }
-    // console.log(
-    //   //                       ********************************
-    //   "No Data Object for Current Day (",
-    //   "Month:",
-    //   i,
-    //   "day:",
-    //   j,
-    //   ")"
+    // Set Variables
+    currentLoopDayCounter = dayCounter - skipFirstDays;
+    currentLoopDayEl = document.querySelector(`#d${dayCounter}`);
+    // console.log(  //                                                ***************************************
+    //   "dayCounter",
+    //   dayCounter,
+    //   "currentLoopDayCounter",
+    //   currentLoopDayCounter
     // );
-    currentDayLoop++;
+    currentLoopDate = `${currentYear}-${
+      currentMonth + 1
+    }-${currentLoopDayCounter}`;
+    // console.log(currentLoopDate); //               * ********************************
+    if (window.localStorage.getItem(`${currentLoopDate}`)) {
+      currentDayLoopObject = JSON.parse(
+        window.localStorage.getItem(`${currentLoopDate}`)
+      );
+    } else {
+      currentDayLoopObject = {
+        freeTime: 0,
+        studying: 0,
+        productivity: 0,
+      };
+    }
+
+    // console.log(
+    //   // ***********************************
+
+    //   "currentLoopDayEl",
+    //   currentLoopDayEl,
+    //   "currentLoopDate",
+    //   currentLoopDate,
+    //   "currentDayLoopObject",
+    //   currentDayLoopObject
+    // );
+    //Add Text to Current Day
+    let ft = document.createElement("p");
+    let s = document.createElement("p");
+    let p = document.createElement("p");
+    // Productivity and color
+
+    if (currentDayLoopObject) {
+      if (currentDayLoopObject.studying / currentDayLoopObject.freeTime < 0.5) {
+        productivityColor = "red";
+      } else if (
+        currentDayLoopObject.studying / currentDayLoopObject.freeTime <
+        0.6
+      ) {
+        productivityColor = "orange";
+      } else if (
+        currentDayLoopObject.studying / currentDayLoopObject.freeTime <
+        0.7
+      ) {
+        productivityColor = "yellow";
+      } else {
+        productivityColor = "green";
+      }
+    }
+    // console.log(        //                                            *******************************
+    //   "currentDayLoopObject",
+    //   currentDayLoopObject,
+    //   "productivityColor",
+    //   productivityColor
+    // );
+
+    if (
+      !currentDayLoopObject ||
+      !currentDayLoopObject.freeTime ||
+      !currentDayLoopObject.studying ||
+      !currentDayLoopObject.productivity
+    ) {
+      ft.innerHTML = `FT: -`;
+      s.innerHTML = `S: -`;
+      p.innerHTML = `P: -`;
+      currentLoopDayEl.appendChild(ft);
+      currentLoopDayEl.appendChild(s);
+      currentLoopDayEl.appendChild(p);
+      currentLoopDayEl.classList.remove("red", "orange", "yellow", "green");
+    } else {
+      ft.innerHTML = `FT:   ${currentDayLoopObject.freeTime}h`;
+      s.innerHTML = `S:   ${currentDayLoopObject.studying}h`;
+      p.innerHTML = `P: ${currentDayLoopObject.productivity}%`;
+      currentLoopDayEl.appendChild(ft);
+      currentLoopDayEl.appendChild(s);
+      currentLoopDayEl.appendChild(p);
+      currentLoopDayEl.classList.remove("red", "orange", "yellow", "green");
+      currentLoopDayEl.classList.add(`${productivityColor}`);
+    }
+    // console.log("currentLoopDayEl.classList,", currentLoopDayEl.classList); //***************************** */
   }
-
-  // Adding Collected Data To yearDataObject
-
-  // console.log("yearDataObject", yearDataObject); //  ****************************
-
-  // Saving Month Name to Variable
-  switch (i + 1) {
-    case 1:
-      currentMonthName = "January";
-      break;
-    case 2:
-      currentMonthName = "February";
-      break;
-    case 3:
-      currentMonthName = "March";
-      break;
-    case 4:
-      currentMonthName = "April";
-      break;
-    case 5:
-      currentMonthName = "May";
-      break;
-    case 6:
-      currentMonthName = "June";
-      break;
-    case 7:
-      currentMonthName = "July";
-      break;
-    case 8:
-      currentMonthName = "August";
-      break;
-    case 9:
-      currentMonthName = "September";
-      break;
-    case 10:
-      currentMonthName = "October";
-      break;
-    case 11:
-      currentMonthName = "November";
-      break;
-    case 12:
-      currentMonthName = "December";
-      break;
-    default:
-      console.log(`Wrong month number format`);
+  // Skip last days
+  for (let i = 0; i < skipLastDays; i++) {
+    dayCounter++;
+    let inactDay = document.createElement("div");
+    inactDay.classList.add("inact-day");
+    inactDay.setAttribute("id", `d${dayCounter}`);
+    dayNumbersEl.appendChild(inactDay);
   }
-  // Creating Div Element and Adding it to a page
+  // light up a current day
+  //**************************************** */
+  dayNrId = `#d${dayNr + skipFirstDays}`;
+  currentDayEl = document.querySelector(dayNrId);
+  currentDayEl.classList.add("act-day");
 
-  // Create Cal Day
-  let calMonth = document.createElement("div");
-  calMonth.classList.add("cal-month");
-  calMonth.setAttribute("id", `m${i + 1}`);
-  calMonth.textContent = `${currentMonthName}`;
-  calMonth.classList.add("month");
-  monthsEl.appendChild(calMonth);
-  currentMonthEl = document.querySelector(`#m${i + 1}`);
-  // console.log(currentLoopDayCounter); //                                       ***************************
+  // ===================================Building the Year Calendar ========================================================
+  let currentMonthName;
+  let currentMonthEl;
+  monthDays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-  //Add Text to Current Month
-  let ft = document.createElement("p");
-  let s = document.createElement("p");
-  let p = document.createElement("p");
+  let currentMonthLoop;
+  let currentDayLoop;
 
-  // Add Classes
-  ft.classList.add("bonus");
-  s.classList.add("bonus");
-  p.classList.add("bonus");
+  let currentDateObject;
+  let currentMonthDataObject = {
+    ft: 0,
+    s: 0,
+    p: 0,
+  };
+  let currentLoopFullDate;
+  // Loop Through all Dates and Save Data to current Month
 
-  if (
-    !currentMonthDataObject ||
-    !currentMonthDataObject.ft ||
-    !currentMonthDataObject.s
-  ) {
-    ft.innerHTML = `FT: -`;
-    s.innerHTML = `S: -`;
-    p.innerHTML = `P: -`;
-    currentMonthEl.appendChild(ft);
-    currentMonthEl.appendChild(s);
-    currentMonthEl.appendChild(p);
-  } else {
-    ft.innerHTML = `FT:   ${currentMonthDataObject.ft}h`;
-    s.innerHTML = `S: &nbsp;  ${currentMonthDataObject.s}h`;
-    p.innerHTML = `P:&nbsp;&nbsp; ${(
-      (currentMonthDataObject.s / currentMonthDataObject.ft) *
-      100
-    ).toFixed(0)}%`;
+  for (let i = 0; i < 12; i++) {
+    currentMonthLoop = i;
+    // console.log("currentMonthLoop", currentMonthLoop); //            ********************
+    for (let j = 0; j < monthDays[j]; j++) {
+      // console.log("currentDayLoop", j); //            ********************
+      currentLoopFullDate = `${currentYear}-${currentMonthLoop + 1}-${j + 1}`;
 
-    currentMonthEl.appendChild(ft);
-    currentMonthEl.appendChild(s);
-    currentMonthEl.appendChild(p);
+      if (window.localStorage.getItem(`${currentLoopFullDate}`)) {
+        // console.log(
+        //   "Current Date Loop Data Object",
+        //   window.localStorage.getItem(`${currentLoopFullDate}`) //                         ********************
+        // );
+        //Load Current Date Data Object
+        currentDateObject = JSON.parse(
+          window.localStorage.getItem(`${currentLoopFullDate}`)
+        );
+        // console.log("currentDateObject", currentDateObject); //                ********************
+        if (currentDateObject.freeTime || currentDateObject.studying) {
+          // Add Values To currentMonthDataObject
+          if (
+            currentDateObject.freeTime &&
+            currentDateObject.freeTime >= 1 &&
+            currentDateObject.freeTime < 24
+          )
+            currentMonthDataObject.ft += currentDateObject.freeTime;
+          // console.log("currentDateObject.freeTime", currentDateObject.freeTime); // ************
+          // console.log("currentMonthDataObject.ft ", currentMonthDataObject.ft); // ************
+          if (
+            currentDateObject.studying &&
+            currentDateObject.studying >= 1 &&
+            currentDateObject.studying < 24
+          )
+            currentMonthDataObject.s += currentDateObject.studying;
+        }
+      } else {
+        currentDateObject = {
+          studying: 0,
+          freeTime: 0,
+        };
+        // console.log("currentMonthDataObject", currentMonthDataObject);
+        // console.log("currentDateObject", currentDateObject);
+      }
+      // console.log(
+      //   //                       ********************************
+      //   "No Data Object for Current Day (",
+      //   "Month:",
+      //   i,
+      //   "day:",
+      //   j,
+      //   ")"
+      // );
+      currentDayLoop++;
+    }
+
+    // Adding Collected Data To yearDataObject
+
+    // console.log("yearDataObject", yearDataObject); //  ****************************
+
+    // Saving Month Name to Variable
+    switch (i + 1) {
+      case 1:
+        currentMonthName = "January";
+        break;
+      case 2:
+        currentMonthName = "February";
+        break;
+      case 3:
+        currentMonthName = "March";
+        break;
+      case 4:
+        currentMonthName = "April";
+        break;
+      case 5:
+        currentMonthName = "May";
+        break;
+      case 6:
+        currentMonthName = "June";
+        break;
+      case 7:
+        currentMonthName = "July";
+        break;
+      case 8:
+        currentMonthName = "August";
+        break;
+      case 9:
+        currentMonthName = "September";
+        break;
+      case 10:
+        currentMonthName = "October";
+        break;
+      case 11:
+        currentMonthName = "November";
+        break;
+      case 12:
+        currentMonthName = "December";
+        break;
+      default:
+        console.log(`Wrong month number format`);
+    }
+    // Creating Div Element and Adding it to a page
+
+    // Create Cal Day
+    let calMonth = document.createElement("div");
+    calMonth.classList.add("cal-month");
+    calMonth.setAttribute("id", `m${i + 1}`);
+    calMonth.textContent = `${currentMonthName}`;
+    calMonth.classList.add("month");
+    monthsEl.appendChild(calMonth);
+    currentMonthEl = document.querySelector(`#m${i + 1}`);
+    // console.log(currentLoopDayCounter); //                                       ***************************
+
+    //Add Text to Current Month
+    let ft = document.createElement("p");
+    let s = document.createElement("p");
+    let p = document.createElement("p");
+
+    // Add Classes
+    ft.classList.add("bonus");
+    s.classList.add("bonus");
+    p.classList.add("bonus");
+
+    if (
+      !currentMonthDataObject ||
+      !currentMonthDataObject.ft ||
+      !currentMonthDataObject.s
+    ) {
+      ft.innerHTML = `FT: -`;
+      s.innerHTML = `S: -`;
+      p.innerHTML = `P: -`;
+      currentMonthEl.appendChild(ft);
+      currentMonthEl.appendChild(s);
+      currentMonthEl.appendChild(p);
+    } else {
+      ft.innerHTML = `FT:   ${currentMonthDataObject.ft}h`;
+      s.innerHTML = `S: &nbsp;  ${currentMonthDataObject.s}h`;
+      p.innerHTML = `P:&nbsp;&nbsp; ${(
+        (currentMonthDataObject.s / currentMonthDataObject.ft) *
+        100
+      ).toFixed(0)}%`;
+
+      currentMonthEl.appendChild(ft);
+      currentMonthEl.appendChild(s);
+      currentMonthEl.appendChild(p);
+    }
+    yearDataObject[i + 1].ft = currentMonthDataObject.ft;
+    yearDataObject[i + 1].s = currentMonthDataObject.s;
+    currentMonthDataObject.ft = 0;
+    currentMonthDataObject.s = 0;
   }
-  yearDataObject[i + 1].ft = currentMonthDataObject.ft;
-  yearDataObject[i + 1].s = currentMonthDataObject.s;
-  currentMonthDataObject.ft = 0;
-  currentMonthDataObject.s = 0;
+  // Add FreeTime & Studying to current day + Save Income From Studying Hours
 }
-// Add FreeTime & Studying to current day + Save Income From Studying Hours
+buildCalendars();
 
 let saveBtnEl = document.querySelector("#save-btn");
 
@@ -983,7 +991,7 @@ function calcProductivityBonus() {
 
   // Display Bonus:
   if (productivityBonus > 0) {
-    bonusValueEl.textContent = `+ ${productivityBonus * 100}%`;
+    bonusValueEl.textContent = `+ ${(productivityBonus * 100).toFixed(0)}%`;
   } else {
     bonusValueEl.textContent = `0%`;
   }
