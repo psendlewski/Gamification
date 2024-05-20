@@ -191,7 +191,7 @@ function createCalendarDayDataObject() {
   currentDayCalendarData = JSON.parse(
     window.localStorage.getItem(`${currentFullDate}`)
   );
-  console.log(currentDayCalendarData); //                           ****************************
+  // console.log(currentDayCalendarData); //                           ****************************
 }
 
 // Extract date and time from the response
@@ -329,10 +329,17 @@ for (let i = 0; i < daysInMonth; i++) {
     currentMonth + 1
   }-${currentLoopDayCounter}`;
   // console.log(currentLoopDate); //               * ********************************
-  if (window.localStorage.getItem(`${currentLoopDate}`))
+  if (window.localStorage.getItem(`${currentLoopDate}`)) {
     currentDayLoopObject = JSON.parse(
       window.localStorage.getItem(`${currentLoopDate}`)
     );
+  } else {
+    currentDayLoopObject = {
+      freeTime: 0,
+      studying: 0,
+      productivity: 0,
+    };
+  }
 
   // console.log(
   //   // ***********************************
@@ -433,14 +440,15 @@ let currentLoopFullDate;
 for (let i = 0; i < 12; i++) {
   currentMonthLoop = i;
   // console.log("currentMonthLoop", currentMonthLoop); //            ********************
-  for (let j = 0; j < monthDays[i]; j++) {
+  for (let j = 0; j < monthDays[j]; j++) {
     // console.log("currentDayLoop", j); //            ********************
-    currentLoopFullDate = `${currentYear}-${
-      currentMonthLoop + 1
-    }-${currentDayLoop}`;
+    currentLoopFullDate = `${currentYear}-${currentMonthLoop + 1}-${j + 1}`;
 
     if (window.localStorage.getItem(`${currentLoopFullDate}`)) {
-      console.log(window.localStorage.getItem(`${currentLoopFullDate}`));
+      console.log(
+        "Current Date Loop Data Object",
+        window.localStorage.getItem(`${currentLoopFullDate}`)
+      );
       //Load Current Date Data Object
       currentDateObject = JSON.parse(
         window.localStorage.getItem(`${currentLoopFullDate}`)
@@ -453,17 +461,23 @@ for (let i = 0; i < 12; i++) {
           currentMonthDataObject.s += currentDateObject.studying;
       }
     } else {
-      // console.log(
-      //   //                       ********************************
-      //   "No Data Object for Current Day (",
-      //   "Month:",
-      //   i,
-      //   "day:",
-      //   j,
-      //   ")"
-      // );
+      currentDateObject = {
+        studying: 0,
+        freeTime: 0,
+      };
     }
+    // console.log(
+    //   //                       ********************************
+    //   "No Data Object for Current Day (",
+    //   "Month:",
+    //   i,
+    //   "day:",
+    //   j,
+    //   ")"
+    // );
   }
+  currentDayLoop++;
+
   // Adding Collected Data To yearDataObject
   yearDataObject[i + 1] = currentMonthDataObject;
   // console.log("yearDataObject", yearDataObject); //  ****************************
@@ -555,7 +569,6 @@ for (let i = 0; i < 12; i++) {
     currentMonthEl.classList.add(`bonus`);
   }
 }
-
 // Add FreeTime & Studying to current day + Save Income From Studying Hours
 
 let saveBtnEl = document.querySelector("#save-btn");
@@ -762,7 +775,7 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
 
   currentTimeObj.balance =
     pastTimeObj.balance + difference * (passiveIncomePerSec / 2);
-  console.log("passiveIncomePerSec", passiveIncomePerSec);
+  // console.log("passiveIncomePerSec", passiveIncomePerSec);
 
   // Save new balance
   window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
@@ -864,21 +877,21 @@ upgradeBtnEl.addEventListener("click", () => {
     window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
     // console.log(window.localStorage.getItem("pastTimeObj")); //                         **********************
 
-    console.log(
-      "Old Passive Income Level:",
-      passiveIncomeLevel,
-      "Old Passive Income:",
-      passiveIncome
-    ); // *******************
+    // console.log(
+    //   "Old Passive Income Level:",
+    //   passiveIncomeLevel,
+    //   "Old Passive Income:",
+    //   passiveIncome
+    // ); // *******************
     // Change and export passive income levels
     passiveIncomeLevel++;
     passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
-    console.log(
-      "New Passive Income Level:",
-      passiveIncomeLevel,
-      "New Passive Income:",
-      passiveIncome
-    ); // *********************
+    // console.log(
+    //   "New Passive Income Level:",
+    //   passiveIncomeLevel,
+    //   "New Passive Income:",
+    //   passiveIncome
+    // ); // *********************
 
     window.localStorage.setItem("passiveIncome", JSON.stringify(passiveIncome));
     window.localStorage.setItem(
