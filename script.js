@@ -453,20 +453,20 @@ for (let i = 0; i < 12; i++) {
           currentMonthDataObject.s += currentDateObject.studying;
       }
     } else {
-      console.log(
-        //                       ********************************
-        "No Data Object for Current Day (",
-        "Month:",
-        i,
-        "day:",
-        j,
-        ")"
-      );
+      // console.log(
+      //   //                       ********************************
+      //   "No Data Object for Current Day (",
+      //   "Month:",
+      //   i,
+      //   "day:",
+      //   j,
+      //   ")"
+      // );
     }
   }
   // Adding Collected Data To yearDataObject
   yearDataObject[i + 1] = currentMonthDataObject;
-  console.log("yearDataObject", yearDataObject); //  ****************************
+  // console.log("yearDataObject", yearDataObject); //  ****************************
 
   // Saving Month Name to Variable
   switch (i + 1) {
@@ -750,8 +750,19 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
 
   productivityBonusCounter++;
 
+  if (window.localStorage.getItem("passiveIncome"))
+    passiveIncome = window.localStorage.getItem("passiveIncome");
+  passiveIncomePerSec = passiveIncome / 24 / 60 / 60;
+  console.log(
+    "passiveIncome",
+    passiveIncome,
+    "passiveIncomePerSec",
+    passiveIncomePerSec
+  );
+
   currentTimeObj.balance =
     pastTimeObj.balance + difference * (passiveIncomePerSec / 2);
+  console.log("passiveIncomePerSec", passiveIncomePerSec);
 
   // Save new balance
   window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
@@ -770,7 +781,7 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
 
   // Display Balance
   if (currentTimeObj.balance) {
-    balanceEl.textContent = `€${currentTimeObj.balance.toFixed(6)}`;
+    balanceEl.textContent = `€${currentTimeObj.balance.toFixed(7)}`;
     expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
   }
   return currentTimeObj.balance;
@@ -853,9 +864,21 @@ upgradeBtnEl.addEventListener("click", () => {
     window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
     // console.log(window.localStorage.getItem("pastTimeObj")); //                         **********************
 
+    console.log(
+      "Old Passive Income Level:",
+      passiveIncomeLevel,
+      "Old Passive Income:",
+      passiveIncome
+    ); // *******************
     // Change and export passive income levels
     passiveIncomeLevel++;
     passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
+    console.log(
+      "New Passive Income Level:",
+      passiveIncomeLevel,
+      "New Passive Income:",
+      passiveIncome
+    ); // *********************
 
     window.localStorage.setItem("passiveIncome", JSON.stringify(passiveIncome));
     window.localStorage.setItem(
@@ -874,7 +897,7 @@ upgradeBtnEl.addEventListener("click", () => {
     // );
 
     // Display
-    balanceEl.textContent = `€${currentTimeObj.balance.toFixed(6)}`;
+    balanceEl.textContent = `€${currentTimeObj.balance.toFixed(7)}`;
     expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
     levelEl.textContent = passiveIncomeLevel;
     incomeEl.textContent = `€${passiveIncome.toFixed(2)}/d`;
