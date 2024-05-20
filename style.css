@@ -354,6 +354,7 @@
     border-radius: 5px;
     box-shadow: 5px 5px 5px #000000;
     font-size: 14px;
+    color: aliceblue;
   }
   .month p {
     text-align: left;
@@ -751,7 +752,6 @@
     box-shadow: 5px 5px 5px #252525;
     background-color: #111111;
     z-index: 1;
-    color: aliceblue;
   }
   .month {
     width: 16vw;
@@ -759,6 +759,7 @@
     border-radius: 5px;
     box-shadow: 5px 5px 5px #000000;
     font-size: 2.5vw;
+    color: aliceblue;
   }
   .month p {
     text-align: left;

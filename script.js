@@ -584,8 +584,8 @@ for (let i = 0; i < 12; i++) {
     currentMonthEl.appendChild(p);
   } else {
     ft.innerHTML = `FT:   ${currentMonthDataObject.ft}h`;
-    s.innerHTML = `S:   ${currentMonthDataObject.s}h`;
-    p.innerHTML = `P: ${(
+    s.innerHTML = `S: &nbsp;  ${currentMonthDataObject.s}h`;
+    p.innerHTML = `P:&nbsp;&nbsp; ${(
       (currentMonthDataObject.s / currentMonthDataObject.ft) *
       100
     ).toFixed(0)}%`;
@@ -593,7 +593,6 @@ for (let i = 0; i < 12; i++) {
     currentMonthEl.appendChild(ft);
     currentMonthEl.appendChild(s);
     currentMonthEl.appendChild(p);
-    currentMonthEl.classList.add(`bonus`);
   }
   yearDataObject[i + 1].ft = currentMonthDataObject.ft;
   yearDataObject[i + 1].s = currentMonthDataObject.s;
