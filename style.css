@@ -312,19 +312,19 @@
     color: #aaaaaa;
   }
   .red {
-    border: 2px dotted #ff4136;
+    border: 2px dashed #ff4136;
     box-sizing: border-box;
   }
   .orange {
-    border: 2px dotted #ff851b;
+    border: 2px dashed #ff851b;
     box-sizing: border-box;
   }
   .yellow {
-    border: 2px dotted #ffdc00;
+    border: 2px dashed #ffdc00;
     box-sizing: border-box;
   }
   .green {
-    border: 2px dotted #01ff70;
+    border: 2px dashed #01ff70;
 
     box-sizing: border-box;
   }
@@ -722,19 +722,19 @@
     color: #aaaaaa;
   }
   .red {
-    border: 1px dotted #ff4136;
+    border: 1px dashed #ff4136;
     box-sizing: border-box;
   }
   .orange {
-    border: 1px dotted #ff851b;
+    border: 1px dashed #ff851b;
     box-sizing: border-box;
   }
   .yellow {
-    border: 1px dotted #ffdc00;
+    border: 1px dashed #ffdc00;
     box-sizing: border-box;
   }
   .green {
-    border: 1px dotted #01ff70;
+    border: 1px dashed #01ff70;
     box-sizing: border-box;
     font-weight: 1000;
   }

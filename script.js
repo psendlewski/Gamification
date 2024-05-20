@@ -45,7 +45,20 @@ let monthNr;
 let month;
 let time;
 let dataObject = {};
-let yearDataObject = {};
+let yearDataObject = {
+  1: { ft: 0, s: 0, p: 0 },
+  2: { ft: 0, s: 0, p: 0 },
+  3: { ft: 0, s: 0, p: 0 },
+  4: { ft: 0, s: 0, p: 0 },
+  5: { ft: 0, s: 0, p: 0 },
+  6: { ft: 0, s: 0, p: 0 },
+  7: { ft: 0, s: 0, p: 0 },
+  8: { ft: 0, s: 0, p: 0 },
+  9: { ft: 0, s: 0, p: 0 },
+  10: { ft: 0, s: 0, p: 0 },
+  11: { ft: 0, s: 0, p: 0 },
+  12: { ft: 0, s: 0, p: 0 },
+};
 
 let firstDayofAMonth;
 let skipFirstDays;
@@ -445,19 +458,30 @@ for (let i = 0; i < 12; i++) {
     currentLoopFullDate = `${currentYear}-${currentMonthLoop + 1}-${j + 1}`;
 
     if (window.localStorage.getItem(`${currentLoopFullDate}`)) {
-      console.log(
-        "Current Date Loop Data Object",
-        window.localStorage.getItem(`${currentLoopFullDate}`)
-      );
+      // console.log(
+      //   "Current Date Loop Data Object",
+      //   window.localStorage.getItem(`${currentLoopFullDate}`) //                         ********************
+      // );
       //Load Current Date Data Object
       currentDateObject = JSON.parse(
         window.localStorage.getItem(`${currentLoopFullDate}`)
       );
+      console.log("currentDateObject", currentDateObject); //                ********************
       if (currentDateObject.freeTime || currentDateObject.studying) {
         // Add Values To currentMonthDataObject
-        if (currentDateObject.freeTime && currentDateObject.freeTime > 0)
+        if (
+          currentDateObject.freeTime &&
+          currentDateObject.freeTime >= 1 &&
+          currentDateObject.freeTime < 24
+        )
           currentMonthDataObject.ft += currentDateObject.freeTime;
-        if (currentDateObject.studying && currentDateObject.studying > 0)
+        console.log("currentDateObject.freeTime", currentDateObject.freeTime); // ************
+        console.log("currentMonthDataObject.ft ", currentMonthDataObject.ft); // ************
+        if (
+          currentDateObject.studying &&
+          currentDateObject.studying >= 1 &&
+          currentDateObject.studying < 24
+        )
           currentMonthDataObject.s += currentDateObject.studying;
       }
     } else {
@@ -465,6 +489,8 @@ for (let i = 0; i < 12; i++) {
         studying: 0,
         freeTime: 0,
       };
+      console.log("currentMonthDataObject", currentMonthDataObject);
+      console.log("currentDateObject", currentDateObject);
     }
     // console.log(
     //   //                       ********************************
@@ -475,12 +501,12 @@ for (let i = 0; i < 12; i++) {
     //   j,
     //   ")"
     // );
+    currentDayLoop++;
   }
-  currentDayLoop++;
 
   // Adding Collected Data To yearDataObject
-  yearDataObject[i + 1] = currentMonthDataObject;
-  // console.log("yearDataObject", yearDataObject); //  ****************************
+
+  console.log("yearDataObject", yearDataObject); //  ****************************
 
   // Saving Month Name to Variable
   switch (i + 1) {
@@ -557,17 +583,22 @@ for (let i = 0; i < 12; i++) {
     currentMonthEl.appendChild(s);
     currentMonthEl.appendChild(p);
   } else {
-    ft.innerHTML = `FT:   ${currentMonthDataObject.freeTime}h`;
-    s.innerHTML = `S:   ${currentMonthDataObject.studying}h`;
-    p.innerHTML = `P: ${
-      (currentMonthDataObject.studying / currentMonthDataObject.freeTime) * 100
-    }%`;
+    ft.innerHTML = `FT:   ${currentMonthDataObject.ft}h`;
+    s.innerHTML = `S:   ${currentMonthDataObject.s}h`;
+    p.innerHTML = `P: ${(
+      (currentMonthDataObject.s / currentMonthDataObject.ft) *
+      100
+    ).toFixed(0)}%`;
 
     currentMonthEl.appendChild(ft);
     currentMonthEl.appendChild(s);
     currentMonthEl.appendChild(p);
     currentMonthEl.classList.add(`bonus`);
   }
+  yearDataObject[i + 1].ft = currentMonthDataObject.ft;
+  yearDataObject[i + 1].s = currentMonthDataObject.s;
+  currentMonthDataObject.ft = 0;
+  currentMonthDataObject.s = 0;
 }
 // Add FreeTime & Studying to current day + Save Income From Studying Hours
 
@@ -766,12 +797,12 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
   if (window.localStorage.getItem("passiveIncome"))
     passiveIncome = window.localStorage.getItem("passiveIncome");
   passiveIncomePerSec = passiveIncome / 24 / 60 / 60;
-  console.log(
-    "passiveIncome",
-    passiveIncome,
-    "passiveIncomePerSec",
-    passiveIncomePerSec
-  );
+  // console.log(
+  //   "passiveIncome",
+  //   passiveIncome,
+  //   "passiveIncomePerSec",
+  //   passiveIncomePerSec
+  // );
 
   currentTimeObj.balance =
     pastTimeObj.balance + difference * (passiveIncomePerSec / 2);
@@ -927,7 +958,7 @@ function calcProductivityBonus() {
   let bonusAverage;
   let productivity;
 
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i <= 7; i++) {
     loopFullDate = `${currentYear}-${currentMonth + 1}-${startingDay + i}`;
     // console.log("loopFullDate", loopFullDate); //              ***************************
     loopDataObject = JSON.parse(window.localStorage.getItem(`${loopFullDate}`));
