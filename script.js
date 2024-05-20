@@ -466,7 +466,7 @@ for (let i = 0; i < 12; i++) {
       currentDateObject = JSON.parse(
         window.localStorage.getItem(`${currentLoopFullDate}`)
       );
-      console.log("currentDateObject", currentDateObject); //                ********************
+      // console.log("currentDateObject", currentDateObject); //                ********************
       if (currentDateObject.freeTime || currentDateObject.studying) {
         // Add Values To currentMonthDataObject
         if (
@@ -475,8 +475,8 @@ for (let i = 0; i < 12; i++) {
           currentDateObject.freeTime < 24
         )
           currentMonthDataObject.ft += currentDateObject.freeTime;
-        console.log("currentDateObject.freeTime", currentDateObject.freeTime); // ************
-        console.log("currentMonthDataObject.ft ", currentMonthDataObject.ft); // ************
+        // console.log("currentDateObject.freeTime", currentDateObject.freeTime); // ************
+        // console.log("currentMonthDataObject.ft ", currentMonthDataObject.ft); // ************
         if (
           currentDateObject.studying &&
           currentDateObject.studying >= 1 &&
@@ -489,8 +489,8 @@ for (let i = 0; i < 12; i++) {
         studying: 0,
         freeTime: 0,
       };
-      console.log("currentMonthDataObject", currentMonthDataObject);
-      console.log("currentDateObject", currentDateObject);
+      // console.log("currentMonthDataObject", currentMonthDataObject);
+      // console.log("currentDateObject", currentDateObject);
     }
     // console.log(
     //   //                       ********************************
@@ -506,7 +506,7 @@ for (let i = 0; i < 12; i++) {
 
   // Adding Collected Data To yearDataObject
 
-  console.log("yearDataObject", yearDataObject); //  ****************************
+  // console.log("yearDataObject", yearDataObject); //  ****************************
 
   // Saving Month Name to Variable
   switch (i + 1) {
@@ -615,7 +615,7 @@ saveBtnEl.addEventListener("click", () => {
 
   // Change current income for studying
   currentTimeObj.balance += incomeForStudyingDifference;
-  console.log("incomeForStudyingDifference", incomeForStudyingDifference); // *************************
+  // console.log("incomeForStudyingDifference", incomeForStudyingDifference); // *************************
 
   // Save New Balance in Local Storage
   window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
