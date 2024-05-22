@@ -246,7 +246,27 @@
     left: 720px;
     cursor: pointer;
   }
-
+  .save-btn {
+    background: rgb(65, 65, 65);
+    background: linear-gradient(
+      141deg,
+      rgba(65, 65, 65, 1) 0%,
+      rgba(17, 17, 17, 1) 100%
+    );
+    width: 100px;
+    height: 32px;
+    border-radius: 7px;
+    box-shadow: 5px 5px 5px black;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+  }
   #cal-container {
     display: flex;
     flex-wrap: wrap;
@@ -387,6 +407,55 @@
     top: 10px;
     left: 840px;
     cursor: pointer;
+  }
+  .edit-past {
+    cursor: pointer;
+  }
+
+  .edit-past:hover {
+    background-color: #303030;
+    transition-duration: 0.5s;
+  }
+  .hidden {
+    display: none;
+  }
+  #edit-window {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    position: absolute;
+    z-index: 500;
+    width: 320px;
+    height: 420px;
+    background: rgb(55, 55, 55);
+    background: linear-gradient(
+      141deg,
+      rgba(55, 55, 55, 1) 0%,
+      rgba(0, 0, 0, 1) 100%
+    );
+    border-radius: 30px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #aaaaaa;
+  }
+
+  #edit-current-date {
+    font-size: 40px;
+    margin-top: 20px;
+    color: orangered;
+  }
+  #edit-window form {
+    margin-top: 30px;
+    font-size: 25px;
+    color: #aaaaaa;
+    font-weight: 600;
+  }
+
+  #edit-window form input {
+    margin: 15px;
+    padding: 15px;
+    text-align: center;
   }
 }
 @keyframes light-up {
@@ -660,7 +729,27 @@
     transform: translateX(-50%);
     cursor: pointer;
   }
-
+  .save-btn {
+    background: rgb(65, 65, 65);
+    background: linear-gradient(
+      141deg,
+      rgba(65, 65, 65, 1) 0%,
+      rgba(17, 17, 17, 1) 100%
+    );
+    width: 18vw;
+    height: 6vw;
+    border-radius: 7px;
+    box-shadow: 5px 5px 5px black;
+    font-size: 3vw;
+    font-weight: 700;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    cursor: pointer;
+  }
   #cal-container {
     display: flex;
     flex-wrap: wrap;
@@ -804,18 +893,72 @@
     left: 93vw;
     cursor: pointer;
   }
-}
-@keyframes light-up {
-  from {
-    box-shadow: 0px 0px 0px rgb(218, 144, 32);
+  .hidden {
+    display: none;
   }
-  to {
-    box-shadow: 0px 0px 20px rgb(255, 155, 5);
+
+  #edit-window {
+    display: none;
+    flex-direction: column;
+    align-items: left;
+    position: absolute;
+    z-index: 500;
+    width: 50vw;
+    height: 65vw;
+    background: rgb(55, 55, 55);
+    background: linear-gradient(
+      141deg,
+      rgba(55, 55, 55, 1) 0%,
+      rgba(0, 0, 0, 1) 100%
+    );
+    border-radius: 4vw;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #aaaaaa;
   }
-}
-.light-up {
-  animation-name: light-up;
-  animation-duration: 2s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
+
+  #edit-current-date {
+    font-size: 6vw;
+    margin-top: 3vw;
+    color: orangered;
+  }
+  #edit-window form {
+    margin-top: 7vw;
+    font-size: 3vw;
+    color: #aaaaaa;
+    font-weight: 600;
+  }
+
+  #edit-window form input {
+    width: 12vw;
+    margin: 2vw;
+    padding: 1vw;
+    text-align: center;
+    font-size: 4vw;
+    font-weight: 500;
+  }
+  @keyframes light-up {
+    from {
+      box-shadow: 0px 0px 0px rgb(218, 144, 32);
+    }
+    to {
+      box-shadow: 0px 0px 20px rgb(255, 155, 5);
+    }
+  }
+  .light-up {
+    animation-name: light-up;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+
+  .edit-past {
+    cursor: pointer;
+  }
+
+  .edit-past:hover {
+    background-color: #303030;
+    transition-duration: 0.5s;
+  }
 }

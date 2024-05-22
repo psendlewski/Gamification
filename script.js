@@ -93,7 +93,7 @@ let currentDayOfWeek = currentDate.getDay();
 
 dayNr = currentDay;
 dayOfAWeekNr = currentDayOfWeek;
-monthNr = currentMonth;
+monthNr = currentMonth + 1;
 
 // let balance;
 let balance;
@@ -107,6 +107,15 @@ let currentTimeObj = {
   balance,
 };
 let pastTimeObj = {};
+
+// Edit Current Date data
+let currentEditDayId;
+let currentEditDay;
+
+let editFreeTimeEl = document.querySelector("#edit-free-time");
+let editStudyingEl = document.querySelector("#edit-studying");
+let editWindowEl = document.querySelector("#edit-window");
+let editCurrentDateEl = document.querySelector("#edit-current-date");
 
 loadCalendarDayDataObject();
 
@@ -465,7 +474,7 @@ function buildCalendars() {
       currentLoopFullDate = `${currentYear}-${currentMonthLoop + 1}-${j + 1}`;
 
       if (window.localStorage.getItem(`${currentLoopFullDate}`)) {
-        console.log("Current Date Object Found!)", currentLoopFullDate);
+        // console.log("Current Date Object Found!)", currentLoopFullDate);
         // console.log(
         //   "Current Date Loop Data Object",
         //   window.localStorage.getItem(`${currentLoopFullDate}`) //                         ********************
@@ -493,7 +502,7 @@ function buildCalendars() {
             currentMonthDataObject.s += currentDateObject.studying;
         }
       } else {
-        console.log("No Current Date Object)", currentLoopFullDate);
+        // console.log("No Current Date Object)", currentLoopFullDate);
         currentDateObject = {
           studying: 0,
           freeTime: 0,
@@ -515,7 +524,7 @@ function buildCalendars() {
 
     // Adding Collected Data To yearDataObject
 
-    console.log("yearDataObject", yearDataObject); //  ****************************
+    // console.log("yearDataObject", yearDataObject); //  ****************************
 
     // Saving Month Name to Variable
     switch (i + 1) {
@@ -999,7 +1008,51 @@ function calcProductivityBonus() {
     bonusValueEl.textContent = `0%`;
   }
 }
+// Add Edit Days Function
 
+function addEditorToPastDays() {
+  for (let i = 0; i <= currentDay; i++) {
+    let currentDayEl = document.querySelector(`#d${i + 1}`);
+    // console.log(currentDayEl);
+    currentDayEl.classList.add("edit-past");
+
+    currentDayEl.addEventListener("click", () => {
+
+      // Display Edit window
+      editWindowEl.style = "display: flex";
+
+      // Get Day Number From Current Element Id and save it to external variable
+      let currentDayId = String(currentDayEl.attributes.id.value);
+      currentEditDay =
+        parseInt(currentDayId.replace(/\D/g, "")) - skipFirstDays;
+      // console.log(currentEditDayId);
+
+      // Change Date inside edit window
+      editCurrentDateEl.innerHTML = `${currentEditDay}<br>${month}`;
+
+      // Check current day object for data
+      let currentDate = `${currentYear}-${currentMonth + 1}-${currentEditDay}`;
+      // console.log(currentDate);
+      if (window.localStorage.getItem(currentDate)) {
+        // console.log("Object exist in local memory");
+        let currentDateObject = JSON.parse(
+          window.localStorage.getItem(currentDate)
+        );
+        // console.log(currentDateObject);
+
+        // Display proper data in edit window
+        editFreeTimeEl.value = currentDateObject.freeTime;
+        editStudyingEl.value = currentDateObject.freeTime;
+      } else {
+        editFreeTimeEl.value = 0;
+        editStudyingEl.value = 0;
+      }
+    });
+  }
+}
+addEditorToPastDays();
+
+function addEditorToPastMonths() {}
 // Function calls on interval
 setInterval(() => {
   loadPastTimeObj();
