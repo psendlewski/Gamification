@@ -442,7 +442,7 @@ function buildCalendars() {
   // ===================================Building the Year Calendar ========================================================
   let currentMonthName;
   let currentMonthEl;
-  monthDays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  let monthDays = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
   let currentMonthLoop;
   let currentDayLoop;
@@ -459,11 +459,13 @@ function buildCalendars() {
   for (let i = 0; i < 12; i++) {
     currentMonthLoop = i;
     // console.log("currentMonthLoop", currentMonthLoop); //            ********************
-    for (let j = 0; j < monthDays[j]; j++) {
+    for (let j = 0; j < monthDays[i]; j++) {
+      // console.log(monthDays[i]);
       // console.log("currentDayLoop", j); //            ********************
       currentLoopFullDate = `${currentYear}-${currentMonthLoop + 1}-${j + 1}`;
 
       if (window.localStorage.getItem(`${currentLoopFullDate}`)) {
+        console.log("Current Date Object Found!)", currentLoopFullDate);
         // console.log(
         //   "Current Date Loop Data Object",
         //   window.localStorage.getItem(`${currentLoopFullDate}`) //                         ********************
@@ -491,6 +493,7 @@ function buildCalendars() {
             currentMonthDataObject.s += currentDateObject.studying;
         }
       } else {
+        console.log("No Current Date Object)", currentLoopFullDate);
         currentDateObject = {
           studying: 0,
           freeTime: 0,
@@ -512,7 +515,7 @@ function buildCalendars() {
 
     // Adding Collected Data To yearDataObject
 
-    // console.log("yearDataObject", yearDataObject); //  ****************************
+    console.log("yearDataObject", yearDataObject); //  ****************************
 
     // Saving Month Name to Variable
     switch (i + 1) {
