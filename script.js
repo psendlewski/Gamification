@@ -30,6 +30,9 @@ const progressBgEl = document.querySelector("#progress-background");
 const progressBarEl = document.querySelector("#progress-bar");
 const expEl = document.querySelector(".exp");
 
+const editCloseBtnEl = document.querySelector("#edit-close-btn");
+const editSaveBtn = document.querySelector("#edit-save-btn");
+
 let upgradeCost = 20;
 let progressBarWidth;
 
@@ -347,7 +350,8 @@ function buildCalendars() {
     // Set Variables
     currentLoopDayCounter = dayCounter - skipFirstDays;
     currentLoopDayEl = document.querySelector(`#d${dayCounter}`);
-    // console.log(  //                                                ***************************************
+    // console.log(
+    //   //                                                ***************************************
     //   "dayCounter",
     //   dayCounter,
     //   "currentLoopDayCounter",
@@ -356,7 +360,7 @@ function buildCalendars() {
     currentLoopDate = `${currentYear}-${
       currentMonth + 1
     }-${currentLoopDayCounter}`;
-    // console.log(currentLoopDate); //               * ********************************
+    console.log(currentLoopDate); //               * ********************************
     if (window.localStorage.getItem(`${currentLoopDate}`)) {
       currentDayLoopObject = JSON.parse(
         window.localStorage.getItem(`${currentLoopDate}`)
@@ -369,16 +373,16 @@ function buildCalendars() {
       };
     }
 
-    // console.log(
-    //   // ***********************************
+    console.log(
+      // ***********************************
 
-    //   "currentLoopDayEl",
-    //   currentLoopDayEl,
-    //   "currentLoopDate",
-    //   currentLoopDate,
-    //   "currentDayLoopObject",
-    //   currentDayLoopObject
-    // );
+      "currentLoopDayEl",
+      currentLoopDayEl,
+      "currentLoopDate",
+      currentLoopDate,
+      "currentDayLoopObject",
+      currentDayLoopObject
+    );
     //Add Text to Current Day
     let ft = document.createElement("p");
     let s = document.createElement("p");
@@ -409,12 +413,7 @@ function buildCalendars() {
     //   productivityColor
     // );
 
-    if (
-      !currentDayLoopObject ||
-      !currentDayLoopObject.freeTime ||
-      !currentDayLoopObject.studying ||
-      !currentDayLoopObject.productivity
-    ) {
+    if (!currentDayLoopObject || !currentDayLoopObject.freeTime) {
       ft.innerHTML = `FT: -`;
       s.innerHTML = `S: -`;
       p.innerHTML = `P: -`;
@@ -1008,8 +1007,8 @@ function calcProductivityBonus() {
     bonusValueEl.textContent = `0%`;
   }
 }
-// Add Edit Days Function
 
+// Add Edit- Days Function
 function addEditorToPastDays() {
   for (let i = 0; i <= currentDay; i++) {
     let currentDayEl = document.querySelector(`#d${i + 1}`);
@@ -1017,7 +1016,6 @@ function addEditorToPastDays() {
     currentDayEl.classList.add("edit-past");
 
     currentDayEl.addEventListener("click", () => {
-
       // Display Edit window
       editWindowEl.style = "display: flex";
 
@@ -1034,25 +1032,59 @@ function addEditorToPastDays() {
       let currentDate = `${currentYear}-${currentMonth + 1}-${currentEditDay}`;
       // console.log(currentDate);
       if (window.localStorage.getItem(currentDate)) {
-        // console.log("Object exist in local memory");
+        console.log("Object exist in local memory");
         let currentDateObject = JSON.parse(
           window.localStorage.getItem(currentDate)
         );
-        // console.log(currentDateObject);
+        console.log(currentDateObject);
 
         // Display proper data in edit window
         editFreeTimeEl.value = currentDateObject.freeTime;
-        editStudyingEl.value = currentDateObject.freeTime;
+        editStudyingEl.value = currentDateObject.studying;
       } else {
         editFreeTimeEl.value = 0;
         editStudyingEl.value = 0;
       }
     });
   }
+  // Save Btn Event Listener
+  editSaveBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    let currentDate = `${currentYear}-${currentMonth + 1}-${currentEditDay}`;
+    let currentDayDataObj = {};
+    currentDayDataObj.freeTime = editFreeTimeEl.value;
+    currentDayDataObj.studying = editStudyingEl.value;
+    currentDayDataObj.productivity =
+      editFreeTimeEl.value && editStudyingEl.value
+        ? ((editStudyingEl.value / editFreeTimeEl.value) * 100).toFixed(0)
+        : 0;
+    // Save Data To Local Storage
+    window.localStorage.setItem(
+      `${currentDate}`,
+      JSON.stringify(currentDayDataObj)
+    );
+    // console.log(
+    //   "currentDate",
+    //   currentDate,
+    //   "currentDayDataObject",
+    //   currentDayDataObj
+    // );
+
+    // Close Window
+    editWindowEl.style = "display:none;";
+    buildCalendars();
+  });
 }
 addEditorToPastDays();
 
 function addEditorToPastMonths() {}
+
+// Edit - Close Button
+editCloseBtnEl.addEventListener("click", () => {
+  editWindowEl.style = "display: none;";
+});
+
+console.log(window.localStorage.getItem("2024-05-20"));
 // Function calls on interval
 setInterval(() => {
   loadPastTimeObj();

@@ -457,6 +457,17 @@
     padding: 15px;
     text-align: center;
   }
+  #edit-close-btn {
+    position: absolute;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    font-size: 43px;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 15px;
+    top: 10px;
+    left: 260px;
+  }
 }
 @keyframes light-up {
   from {
@@ -937,6 +948,17 @@
     text-align: center;
     font-size: 4vw;
     font-weight: 500;
+  }
+  #edit-close-btn {
+    position: absolute;
+    cursor: pointer;
+    width: 9vw;
+    height: 9vw;
+    font-size: 8vw;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 3vw;
+    top: 2vw;
+    left: 39vw;
   }
   @keyframes light-up {
     from {
