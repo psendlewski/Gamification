@@ -324,6 +324,10 @@ function buildCalendars() {
   for (let i = 0; i < 12; i++) {
     if (monthsEl.firstChild) monthsEl.firstChild.remove();
   }
+  // Remove all elements in #day-numbers div
+  for (let i = 0; i < 35; i++) {
+    if (dayNumbersEl.firstChild) dayNumbersEl.firstChild.remove();
+  }
 
   if (skipFirstDays > 0) {
     for (let i = 0; i < skipFirstDays; i++) {
@@ -617,6 +621,7 @@ function buildCalendars() {
     currentMonthDataObject.s = 0;
   }
   // Add FreeTime & Studying to current day + Save Income From Studying Hours
+  dayCounter = 0;
 }
 buildCalendars();
 
@@ -1073,6 +1078,7 @@ function addEditorToPastDays() {
     // Close Window
     editWindowEl.style = "display:none;";
     buildCalendars();
+    addEditorToPastDays();
   });
 }
 addEditorToPastDays();
