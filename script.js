@@ -115,6 +115,9 @@ let pastTimeObj = {};
 let currentEditDayId;
 let currentEditDay;
 
+let currentEditMonthId;
+let currentEditMonth;
+
 let editFreeTimeEl = document.querySelector("#edit-free-time");
 let editStudyingEl = document.querySelector("#edit-studying");
 let editWindowEl = document.querySelector("#edit-window");
@@ -619,6 +622,13 @@ function buildCalendars() {
     yearDataObject[i + 1].s = currentMonthDataObject.s;
     currentMonthDataObject.ft = 0;
     currentMonthDataObject.s = 0;
+
+    // Save Year Data to local storage
+    window.localStorage.setItem(
+      "yearDataObject",
+      JSON.stringify(yearDataObject)
+    );
+    // console.log("yearDataObject", yearDataObject);
   }
   // Add FreeTime & Studying to current day + Save Income From Studying Hours
   dayCounter = 0;
@@ -1013,7 +1023,7 @@ function calcProductivityBonus() {
   }
 }
 
-// Add Edit- Days Function
+// ===================Add Edit- Days Function=====================
 function addEditorToPastDays() {
   for (let i = 0; i <= currentDay; i++) {
     let currentDayEl = document.querySelector(`#d${i + 1}`);
@@ -1083,14 +1093,166 @@ function addEditorToPastDays() {
 }
 addEditorToPastDays();
 
-function addEditorToPastMonths() {}
+// ===================Add Edit- Months Function==================
 
-// Edit - Close Button
-editCloseBtnEl.addEventListener("click", () => {
-  editWindowEl.style = "display: none;";
-});
+function addEditorToPastMonths() {
+  // console.log(currentMonth);
+  for (let i = 0; i < currentMonth; i++) {
+    let currentMonthEl = document.querySelector(`#m${i + 1}`);
+    // console.log(currentMonthEl);
+    currentMonthEl.classList.add("edit-past");
 
-console.log(window.localStorage.getItem("2024-05-20"));
+    currentMonthEl.addEventListener("click", () => {
+      // Display Edit window
+      editWindowEl.style = "display: flex";
+
+      currentEditMonth = 0;
+
+      // Saving Month Name to Variable
+      switch (i + 1) {
+        case 1:
+          currentEditMonth = "January";
+          break;
+        case 2:
+          currentEditMonth = "February";
+          break;
+        case 3:
+          currentEditMonth = "March";
+          break;
+        case 4:
+          currentEditMonth = "April";
+          break;
+        case 5:
+          currentEditMonth = "May";
+          break;
+        case 6:
+          currentEditMonth = "June";
+          break;
+        case 7:
+          currentEditMonth = "July";
+          break;
+        case 8:
+          currentEditMonth = "August";
+          break;
+        case 9:
+          currentEditMonth = "September";
+          break;
+        case 10:
+          currentEditMonth = "October";
+          break;
+        case 11:
+          currentEditMonth = "November";
+          break;
+        case 12:
+          currentEditMonth = "December";
+          break;
+        default:
+          console.log(`Wrong month number format`);
+      }
+
+      // Change Date inside edit window
+      editCurrentDateEl.innerHTML = `${currentEditMonth}`;
+
+      // Check Year object for data
+      let currentMonthDataObj = yearDataObject[i + 1];
+      // console.log("currentMonthDataObj", currentMonthDataObj);
+      // console.log(currentEditMonth);
+      // Save Btn Event Listener
+
+      // Display Values in edit window
+      editFreeTimeEl.value = currentMonthDataObj.ft;
+      editStudyingEl.value = currentMonthDataObj.s;
+
+      editSaveBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        // Calculate the difference between yearDataObject
+        let monthDifference = { ft: 0, s: 0 };
+        let currentMonthFirstDay = `${currentYear}-${i + 1}-1`;
+        let currentMonthFirstDayDataObj;
+
+        // console.log("currentMonthFirstDay", currentMonthFirstDay);
+
+        // Load First Day of the month data from local storage and save in currentMonthFirstDayDataObj
+        if (window.localStorage.getItem(currentMonthFirstDay)) {
+          currentMonthFirstDayDataObj = JSON.parse(
+            window.localStorage.getItem(currentMonthFirstDay)
+          );
+        } else {
+          currentMonthFirstDayDataObj = {
+            freeTime: 0,
+            studying: 0,
+            productivity: 0,
+          };
+        }
+
+        // Calculate The Difference between Edit Window values and yearDataObj and save to monthDifference
+        monthDifference.ft = editFreeTimeEl.value - yearDataObject[i + 1].ft;
+        monthDifference.s = editStudyingEl.value - yearDataObject[i + 1].s;
+
+        // console.log("yearDataObject", yearDataObject);
+        // console.log("monthDifference", monthDifference);
+
+        // Add Difference to First Day Data Object
+        currentMonthFirstDayDataObj.freeTime += monthDifference.ft;
+        currentMonthFirstDayDataObj.studying += monthDifference.s;
+        currentMonthFirstDayDataObj.productivity =
+          currentMonthFirstDayDataObj.freeTime &&
+          currentMonthFirstDayDataObj.studying
+            ? (
+                (currentMonthFirstDayDataObj.studying /
+                  currentMonthFirstDayDataObj.freeTime) *
+                100
+              ).toFixed(0)
+            : 0;
+
+        // console.log("currentMonthFirstDayDataObj", currentMonthFirstDayDataObj);
+
+        // Clear monthDifference
+        monthDifference.ft = 0;
+        monthDifference.s = 0;
+
+        // *****************
+        // Save Data To Local Storage
+        window.localStorage.setItem(
+          `${currentMonthFirstDay}`,
+          JSON.stringify(currentMonthFirstDayDataObj)
+        );
+        console.log(
+          "First March 2024 - local storage-",
+          window.localStorage.getItem("2024-3-1")
+        );
+        // console.log("currentMonthFirstDay", currentMonthFirstDay);
+        // console.log("currentMonthFirstDayDataObj", currentMonthFirstDayDataObj);
+
+        // console.log(
+        //   "currentDate",
+        //   currentDate,
+        //   "currentMonthDataObject",
+        //   currentMonthDataObj
+        // );
+
+        // Close Window
+        editWindowEl.style = "display:none;";
+        buildCalendars();
+        addEditorToPastDays();
+        addEditorToPastMonths();
+      });
+
+      addEditorToPastMonths();
+      // Edit - Close Button
+      editCloseBtnEl.addEventListener("click", () => {
+        editWindowEl.style = "display: none;";
+      });
+
+      // Display proper data in edit window
+      editFreeTimeEl.value = currentMonthDataObj.ft;
+      editStudyingEl.value = currentMonthDataObj.s;
+    });
+  }
+}
+addEditorToPastMonths();
+
 // Function calls on interval
 setInterval(() => {
   loadPastTimeObj();
