@@ -31,7 +31,8 @@ const progressBarEl = document.querySelector("#progress-bar");
 const expEl = document.querySelector(".exp");
 
 const editCloseBtnEl = document.querySelector("#edit-close-btn");
-const editSaveBtn = document.querySelector("#edit-save-btn");
+// const editSaveBtn = document.querySelector("#edit-save-btn");
+let editSaveBtn;
 
 let upgradeCost = 20;
 let progressBarWidth;
@@ -1078,6 +1079,16 @@ function addEditorToPastDays() {
       }
     });
   }
+
+  // Add Save Button Element
+  editSaveBtn = document.createElement("button");
+  editSaveBtn.attributes.id = "edit-save-btn";
+  editSaveBtn.innerHTML = "&#128190;";
+  editSaveBtn.classList.add("save-btn");
+  editWindowEl.appendChild(editSaveBtn);
+
+  console.log(editSaveBtn);
+
   // Save Btn Event Listener
   editSaveBtn.addEventListener("click", (e) => {
     e.preventDefault();
@@ -1106,6 +1117,9 @@ function addEditorToPastDays() {
     buildCalendars();
     addEditorToPastDays();
     addEditorToPastMonths();
+
+    // Remove the SaveBtnEl
+    saveBtnEl.remove();
   });
 }
 addEditorToPastDays();
@@ -1179,6 +1193,13 @@ function addEditorToPastMonths() {
       // Display Values in edit window
       editFreeTimeEl.value = currentMonthDataObj.ft;
       editStudyingEl.value = currentMonthDataObj.s;
+
+      // Add Save Button Element
+      editSaveBtn = document.createElement("button");
+      editSaveBtn.attributes.id = "edit-save-btn";
+      editSaveBtn.innerHTML = "&#128190;";
+      editSaveBtn.classList.add("save-btn");
+      editWindowEl.appendChild(editSaveBtn);
 
       editSaveBtn.addEventListener("click", (e) => {
         e.preventDefault();
@@ -1254,6 +1275,9 @@ function addEditorToPastMonths() {
         buildCalendars();
         addEditorToPastDays();
         addEditorToPastMonths();
+
+        // Remove the SaveBtnEl
+        saveBtnEl.remove();
       });
 
       addEditorToPastMonths();
