@@ -1105,6 +1105,7 @@ function addEditorToPastDays() {
     editWindowEl.style = "display:none;";
     buildCalendars();
     addEditorToPastDays();
+    addEditorToPastMonths();
   });
 }
 addEditorToPastDays();
