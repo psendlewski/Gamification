@@ -863,13 +863,13 @@
     z-index: 1;
   }
   .month {
-    width: 15vw;
+    width: 16vw;
     height: 20vw;
     border-radius: 5px;
     box-shadow: 5px 5px 5px #000000;
     font-size: 2.5vw;
     color: aliceblue;
-    margin: 0.4vw;
+    margin: 0.1vw;
   }
   .month p {
     text-align: left;
