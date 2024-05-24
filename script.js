@@ -496,7 +496,7 @@ function buildCalendars() {
           if (
             currentDateObject.freeTime &&
             currentDateObject.freeTime >= 1 &&
-            currentDateObject.freeTime < 24
+            currentDateObject.freeTime < 1000
           )
             currentMonthDataObject.ft += parseInt(currentDateObject.freeTime);
           // console.log("currentDateObject.freeTime", currentDateObject.freeTime); // ************
@@ -504,7 +504,7 @@ function buildCalendars() {
           if (
             currentDateObject.studying &&
             currentDateObject.studying >= 1 &&
-            currentDateObject.studying < 24
+            currentDateObject.studying < 1000
           )
             currentMonthDataObject.s += parseInt(currentDateObject.studying);
         }
@@ -645,7 +645,7 @@ function buildCalendars() {
       "yearDataObject",
       JSON.stringify(yearDataObject)
     );
-    // console.log("yearDataObject", yearDataObject);
+    console.log("yearDataObject", yearDataObject);
   }
   // Add FreeTime & Studying to current day + Save Income From Studying Hours
   dayCounter = 0;
@@ -1209,7 +1209,7 @@ function addEditorToPastMonths() {
         let currentMonthFirstDay = `${currentYear}-${i + 1}-1`;
         let currentMonthFirstDayDataObj;
 
-        // console.log("currentMonthFirstDay", currentMonthFirstDay);
+        console.log("currentMonthFirstDay", currentMonthFirstDay);
 
         // Load First Day of the month data from local storage and save in currentMonthFirstDayDataObj
         if (window.localStorage.getItem(currentMonthFirstDay)) {
@@ -1244,7 +1244,7 @@ function addEditorToPastMonths() {
               ).toFixed(0)
             : 0;
 
-        // console.log("currentMonthFirstDayDataObj", currentMonthFirstDayDataObj);
+        console.log("currentMonthFirstDayDataObj", currentMonthFirstDayDataObj);
 
         // Clear monthDifference
         monthDifference.ft = 0;
@@ -1256,10 +1256,10 @@ function addEditorToPastMonths() {
           `${currentMonthFirstDay}`,
           JSON.stringify(currentMonthFirstDayDataObj)
         );
-        // console.log(
-        //   "First March 2024 - local storage-",
-        //   window.localStorage.getItem("2024-3-1")
-        // );
+        console.log(
+          "First April 2024 - local storage-",
+          window.localStorage.getItem("2024-4-1")
+        );
         // console.log("currentMonthFirstDay", currentMonthFirstDay);
         // console.log("currentMonthFirstDayDataObj", currentMonthFirstDayDataObj);
 
