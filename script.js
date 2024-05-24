@@ -364,7 +364,7 @@ function buildCalendars() {
     currentLoopDate = `${currentYear}-${
       currentMonth + 1
     }-${currentLoopDayCounter}`;
-    console.log(currentLoopDate); //               * ********************************
+    // console.log(currentLoopDate); //               * ********************************
     if (window.localStorage.getItem(`${currentLoopDate}`)) {
       currentDayLoopObject = JSON.parse(
         window.localStorage.getItem(`${currentLoopDate}`)
@@ -377,16 +377,16 @@ function buildCalendars() {
       };
     }
 
-    console.log(
-      // ***********************************
+    // console.log(
+    //   // ***********************************
 
-      "currentLoopDayEl",
-      currentLoopDayEl,
-      "currentLoopDate",
-      currentLoopDate,
-      "currentDayLoopObject",
-      currentDayLoopObject
-    );
+    //   "currentLoopDayEl",
+    //   currentLoopDayEl,
+    //   "currentLoopDate",
+    //   currentLoopDate,
+    //   "currentDayLoopObject",
+    //   currentDayLoopObject
+    // );
     //Add Text to Current Day
     let ft = document.createElement("p");
     let s = document.createElement("p");
@@ -494,7 +494,7 @@ function buildCalendars() {
             currentDateObject.freeTime >= 1 &&
             currentDateObject.freeTime < 24
           )
-            currentMonthDataObject.ft += currentDateObject.freeTime;
+            currentMonthDataObject.ft += parseInt(currentDateObject.freeTime);
           // console.log("currentDateObject.freeTime", currentDateObject.freeTime); // ************
           // console.log("currentMonthDataObject.ft ", currentMonthDataObject.ft); // ************
           if (
@@ -502,7 +502,7 @@ function buildCalendars() {
             currentDateObject.studying >= 1 &&
             currentDateObject.studying < 24
           )
-            currentMonthDataObject.s += currentDateObject.studying;
+            currentMonthDataObject.s += parseInt(currentDateObject.studying);
         }
       } else {
         // console.log("No Current Date Object)", currentLoopFullDate);
