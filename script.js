@@ -1119,7 +1119,7 @@ function addEditorToPastDays() {
     addEditorToPastMonths();
 
     // Remove the SaveBtnEl
-    saveBtnEl.remove();
+    editSaveBtn.remove();
   });
 }
 addEditorToPastDays();
@@ -1277,7 +1277,7 @@ function addEditorToPastMonths() {
         addEditorToPastMonths();
 
         // Remove the SaveBtnEl
-        saveBtnEl.remove();
+        editSaveBtn.remove();
       });
 
       addEditorToPastMonths();
