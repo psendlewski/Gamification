@@ -525,6 +525,7 @@ function buildCalendars() {
       //   j,
       //   ")"
       // );
+
       currentDayLoop++;
     }
 
@@ -585,6 +586,21 @@ function buildCalendars() {
     currentMonthEl = document.querySelector(`#m${i + 1}`);
     // console.log(currentLoopDayCounter); //                                       ***************************
 
+    let productivityColor;
+    if (currentMonthDataObject) {
+      if (currentMonthDataObject.s / currentMonthDataObject.ft < 0.5) {
+        productivityColor = "red";
+      } else if (currentMonthDataObject.s / currentMonthDataObject.ft < 0.6) {
+        productivityColor = "orange";
+      } else if (currentMonthDataObject.s / currentMonthDataObject.ft < 0.7) {
+        productivityColor = "yellow";
+      } else {
+        productivityColor = "green";
+      }
+    }
+    if (currentMonthDataObject.s) {
+      currentMonthEl.classList.add(`${productivityColor}`);
+    }
     //Add Text to Current Month
     let ft = document.createElement("p");
     let s = document.createElement("p");
@@ -1218,10 +1234,10 @@ function addEditorToPastMonths() {
           `${currentMonthFirstDay}`,
           JSON.stringify(currentMonthFirstDayDataObj)
         );
-        console.log(
-          "First March 2024 - local storage-",
-          window.localStorage.getItem("2024-3-1")
-        );
+        // console.log(
+        //   "First March 2024 - local storage-",
+        //   window.localStorage.getItem("2024-3-1")
+        // );
         // console.log("currentMonthFirstDay", currentMonthFirstDay);
         // console.log("currentMonthFirstDayDataObj", currentMonthFirstDayDataObj);
 
