@@ -1112,14 +1112,14 @@ function addEditorToPastDays() {
     //   currentDayDataObj
     // );
 
+    // Remove the SaveBtnEl
+    editSaveBtn.remove();
+
     // Close Window
     editWindowEl.style = "display:none;";
     buildCalendars();
     addEditorToPastDays();
     addEditorToPastMonths();
-
-    // Remove the SaveBtnEl
-    editSaveBtn.remove();
   });
 }
 addEditorToPastDays();
@@ -1269,7 +1269,7 @@ function addEditorToPastMonths() {
         //   "currentMonthDataObject",
         //   currentMonthDataObj
         // );
-
+        editSaveBtn.remove();
         // Close Window
         editWindowEl.style = "display:none;";
         buildCalendars();
@@ -1277,7 +1277,6 @@ function addEditorToPastMonths() {
         addEditorToPastMonths();
 
         // Remove the SaveBtnEl
-        editSaveBtn.remove();
       });
 
       addEditorToPastMonths();
