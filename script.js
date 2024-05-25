@@ -1281,10 +1281,6 @@ function addEditorToPastMonths() {
       });
 
       addEditorToPastMonths();
-      // Edit - Close Button
-      editCloseBtnEl.addEventListener("click", () => {
-        editWindowEl.style = "display: none;";
-      });
 
       // Display proper data in edit window
       editFreeTimeEl.value = currentMonthDataObj.ft;
@@ -1293,6 +1289,11 @@ function addEditorToPastMonths() {
   }
 }
 addEditorToPastMonths();
+
+// Edit - Close Button
+editCloseBtnEl.addEventListener("click", () => {
+  editWindowEl.style = "display: none;";
+});
 
 // Function calls on interval
 setInterval(() => {
