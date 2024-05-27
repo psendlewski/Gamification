@@ -1348,38 +1348,36 @@ settingsBtnEl.addEventListener("click", () => {
   settingsIncomeStudyingEl.value = settingsObject.incomePerStudyingHour;
   settingsUpgradeCostEl.value = settingsObject.upgradeCost;
   settingsUpgradeIncomeEl.value = settingsObject.passiveIncomePerLevel;
-
-  // Settings Save Button
-  settingsSaveBtnEl.addEventListener("click", (e) => {
-    e.preventDefault();
-    // Add/substract balance
-    currentTimeObj.balance += parseInt(settingsBalanceEl.value);
-
-    // Add new settings to settingsObject
-    settingsObject.incomePerStudyingHour = settingsIncomeStudyingEl.value;
-    settingsObject.upgradeCost = settingsUpgradeCostEl.value;
-    settingsObject.passiveIncomePerLevel = settingsUpgradeIncomeEl.value;
-
-    // Save settingsObject to LocalStorage
-    window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
-    window.localStorage.setItem(
-      "settingsObject",
-      JSON.stringify(settingsObject)
-    );
-
-    // Calculate New Balance
-    pastTimeObj.balance = currentTimeObj.balance;
-    balanceCalc(pastTimeObj, currentTimeObj);
-
-    // Display New Balance
-
-    // Close Settings Window
-    settingsWindowEl.style = "display:none";
-    overlayEl.style = "display: none";
-  });
 });
+
 // Close settings window
 settingsCloseBtnEl.addEventListener("click", () => {
+  settingsWindowEl.style = "display:none";
+  overlayEl.style = "display: none";
+});
+
+// Settings Save Button
+settingsSaveBtnEl.addEventListener("click", (e) => {
+  e.preventDefault();
+  // Add/substract balance
+  currentTimeObj.balance += parseInt(settingsBalanceEl.value);
+
+  // Add new settings to settingsObject
+  settingsObject.incomePerStudyingHour = settingsIncomeStudyingEl.value;
+  settingsObject.upgradeCost = settingsUpgradeCostEl.value;
+  settingsObject.passiveIncomePerLevel = settingsUpgradeIncomeEl.value;
+
+  // Save settingsObject to LocalStorage
+  window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
+  window.localStorage.setItem("settingsObject", JSON.stringify(settingsObject));
+
+  // Calculate New Balance
+  pastTimeObj.balance = currentTimeObj.balance;
+  balanceCalc(pastTimeObj, currentTimeObj);
+
+  // Display New Balance
+
+  // Close Settings Window
   settingsWindowEl.style = "display:none";
   overlayEl.style = "display: none";
 });
