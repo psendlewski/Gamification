@@ -35,7 +35,6 @@ const editCloseBtnEl = document.querySelector("#edit-close-btn");
 // const editSaveBtn = document.querySelector("#edit-save-btn");
 let editSaveBtn;
 
-let upgradeCost = 20;
 let progressBarWidth;
 
 let freeTime;
@@ -72,7 +71,6 @@ let skipLastDays;
 let currentDayEl;
 
 // Productivity
-let incomePerStudyingHour = 1;
 let productivity;
 let productivityBonus;
 let productivityBonusCounter = 0;
@@ -150,7 +148,7 @@ if (window.localStorage.getItem("settingsObject")) {
   settingsObject = {
     incomePerStudyingHour: 1,
     upgradeCost: 20,
-    passiveIncomePerLevel: 1,
+    passiveIncomePerLevel: 0.1,
   };
   window.localStorage.setItem("settingsObject", JSON.stringify(settingsObject));
 }
@@ -676,7 +674,7 @@ function buildCalendars() {
       "yearDataObject",
       JSON.stringify(yearDataObject)
     );
-    console.log("yearDataObject", yearDataObject);
+    // console.log("yearDataObject", yearDataObject);
   }
   // Add FreeTime & Studying to current day + Save Income From Studying Hours
   dayCounter = 0;
@@ -686,10 +684,10 @@ buildCalendars();
 let saveBtnEl = document.querySelector("#save-btn");
 
 saveBtnEl.addEventListener("click", () => {
-  currentIncomeForStudying = studying * incomePerStudyingHour;
+  currentIncomeForStudying = studying * settingsObject.incomePerStudyingHour;
   oldIncomeForStudying =
     currentDayCalendarData && currentDayCalendarData.studying
-      ? currentDayCalendarData.studying * incomePerStudyingHour
+      ? currentDayCalendarData.studying * settingsObject.incomePerStudyingHour
       : 0;
   incomeForStudyingDifference = currentIncomeForStudying - oldIncomeForStudying;
 
@@ -746,19 +744,19 @@ function loadPassiveIncome() {
     //   window.localStorage.getItem("passiveIncomeLevel")
     // );
     passiveIncomeLevel = window.localStorage.getItem("passiveIncomeLevel");
-    passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
+    passiveIncome = passiveIncomeLevel * settingsObject.passiveIncomePerLevel;
     // console.log("PassiveIncome", passiveIncome);             //                         **********************
   } else {
     // console.log(                  //                         **********************
     //   "PassiveIncomeLoadFailed",
     //   window.localStorage.getItem("passiveIncome")
     // );
-    passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
+    passiveIncome = passiveIncomeLevel * settingsObject.passiveIncomePerLevel;
     window.localStorage.setItem("passiveIncome", JSON.stringify(passiveIncome));
   }
   if (passiveIncome === 0) {
     // console.log("Passive Income === 0"); //                         **********************
-    passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
+    passiveIncome = passiveIncomeLevel * settingsObject.passiveIncomePerLevel;
     window.localStorage.setItem("passiveIncome", JSON.stringify(passiveIncome));
   }
 
@@ -787,7 +785,6 @@ function loadPassiveIncome() {
 }
 
 // Passive Income
-let passiveIncomePerLevel = 0.1;
 let passiveIncomeLevel;
 if (window.localStorage.getItem("passiveIncomeLevel")) {
   passiveIncomeLevel = parseInt(
@@ -800,7 +797,7 @@ if (window.localStorage.getItem("passiveIncomeLevel")) {
     JSON.stringify(passiveIncomeLevel)
   );
 }
-let passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
+let passiveIncome = passiveIncomeLevel * settingsObject.passiveIncomePerLevel;
 
 loadPassiveIncome();
 let passiveIncomePerSec = passiveIncome / 24 / 60 / 60;
@@ -907,7 +904,9 @@ function balanceCalc(pastTimeObj, currentTimeObj) {
   // Display Balance
   if (currentTimeObj.balance) {
     balanceEl.textContent = `€${currentTimeObj.balance.toFixed(7)}`;
-    expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
+    expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${
+      settingsObject.upgradeCost
+    }`;
   }
   return currentTimeObj.balance;
 }
@@ -962,8 +961,11 @@ function updateProgressBar() {
   checkViewportWidth();
   let width;
   if (currentTimeObj.balance) {
-    expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
-    width = progressBarWidth * (currentTimeObj.balance / upgradeCost);
+    expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${
+      settingsObject.upgradeCost
+    }`;
+    width =
+      progressBarWidth * (currentTimeObj.balance / settingsObject.upgradeCost);
     // console.log("Width:", width);//                         **********************
     if (width < 5) {
       progressBarEl.style.width = `${5}px`;
@@ -983,8 +985,8 @@ function updateProgressBar() {
 // ================================Upgrade Button================================
 upgradeBtnEl.addEventListener("click", () => {
   // Change and export Balance
-  if (currentTimeObj.balance >= upgradeCost) {
-    currentTimeObj.balance -= upgradeCost;
+  if (currentTimeObj.balance >= settingsObject.upgradeCost) {
+    currentTimeObj.balance -= settingsObject.upgradeCost;
     pastTimeObj.balance = currentTimeObj.balance;
     window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
     // console.log(window.localStorage.getItem("pastTimeObj")); //                         **********************
@@ -997,7 +999,7 @@ upgradeBtnEl.addEventListener("click", () => {
     // ); // *******************
     // Change and export passive income levels
     passiveIncomeLevel++;
-    passiveIncome = passiveIncomeLevel * passiveIncomePerLevel;
+    passiveIncome = passiveIncomeLevel * settingsObject.passiveIncomePerLevel;
     // console.log(
     //   "New Passive Income Level:",
     //   passiveIncomeLevel,
@@ -1023,7 +1025,9 @@ upgradeBtnEl.addEventListener("click", () => {
 
     // Display
     balanceEl.textContent = `€${currentTimeObj.balance.toFixed(7)}`;
-    expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${upgradeCost}`;
+    expEl.textContent = `${currentTimeObj.balance.toFixed(1)}/${
+      settingsObject.upgradeCost
+    }`;
     levelEl.textContent = passiveIncomeLevel;
     incomeEl.textContent = `€${passiveIncome.toFixed(2)}/d`;
   }
@@ -1061,7 +1065,7 @@ function calcProductivityBonus() {
   // console.log("startingDay", startingDay);
   // console.log("bonusAverage", bonusAverage);
   // console.log("bonusSum", bonusSum);
-  console.log("productivityBonus", productivityBonus); //                         ***********************
+  // console.log("productivityBonus", productivityBonus); //                         ***********************
 
   // Display Bonus:
   if (productivityBonus > 0) {
@@ -1089,7 +1093,7 @@ function addEditorToPastDays() {
       // console.log(currentEditDayId);
 
       // Change Date inside edit window
-      editCurrentDateEl.innerHTML = `${currentEditDay}<br>${month}`;
+      editCurrentDateEl.innerHTML = `${currentEditDay} ${month}`;
 
       // Check current day object for data
       let currentDate = `${currentYear}-${currentMonth + 1}-${currentEditDay}`;
@@ -1118,7 +1122,7 @@ function addEditorToPastDays() {
   editSaveBtn.classList.add("save-btn");
   editWindowEl.appendChild(editSaveBtn);
 
-  console.log(editSaveBtn);
+  // console.log(editSaveBtn);
 
   // Save Btn Event Listener
   editSaveBtn.addEventListener("click", (e) => {
@@ -1327,6 +1331,7 @@ editCloseBtnEl.addEventListener("click", () => {
 
 // Open Settings Window
 settingsBtnEl.addEventListener("click", () => {
+  console.log("Settings Btn");
   settingsWindowEl.style = "display:flex";
 
   // Display suggested values
@@ -1334,10 +1339,35 @@ settingsBtnEl.addEventListener("click", () => {
   settingsIncomeStudyingEl.value = settingsObject.incomePerStudyingHour;
   settingsUpgradeCostEl.value = settingsObject.upgradeCost;
   settingsUpgradeIncomeEl.value = settingsObject.passiveIncomePerLevel;
-});
 
-// Settings Save Button
-settingsS;
+  // Settings Save Button
+  settingsSaveBtnEl.addEventListener("click", (e) => {
+    e.preventDefault();
+    // Add/substract balance
+    currentTimeObj.balance += parseInt(settingsBalanceEl.value);
+
+    // Add new settings to settingsObject
+    settingsObject.incomePerStudyingHour = settingsIncomeStudyingEl.value;
+    settingsObject.upgradeCost = settingsUpgradeCostEl.value;
+    settingsObject.passiveIncomePerLevel = settingsUpgradeIncomeEl.value;
+
+    // Save settingsObject to LocalStorage
+    window.localStorage.setItem("pastTimeObj", JSON.stringify(currentTimeObj));
+    window.localStorage.setItem(
+      "settingsObject",
+      JSON.stringify(settingsObject)
+    );
+
+    // Calculate New Balance
+    pastTimeObj.balance = currentTimeObj.balance;
+    balanceCalc(pastTimeObj, currentTimeObj);
+
+    // Display New Balance
+
+    // Close Settings Window
+    settingsWindowEl.style = "display:none";
+  });
+});
 // Close settings window
 settingsCloseBtnEl.addEventListener("click", () => {
   settingsWindowEl.style = "display:none";

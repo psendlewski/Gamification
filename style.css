@@ -435,10 +435,11 @@
       rgba(0, 0, 0, 1) 100%
     );
     border-radius: 30px;
-    top: 15%;
+    top: 28%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: #aaaaaa;
+    text-align: center;
   }
 
   #edit-current-date {
@@ -468,6 +469,76 @@
     border-radius: 15px;
     top: 10px;
     left: 260px;
+  }
+
+  #settings-window {
+    flex-direction: column;
+    align-items: left;
+    position: absolute;
+    width: 320px;
+    height: 420px;
+    background: rgb(55, 55, 55);
+    background: linear-gradient(
+      141deg,
+      rgba(55, 55, 55, 1) 0%,
+      rgba(0, 0, 0, 1) 100%
+    );
+    border-radius: 4vw;
+    top: 28%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #aaaaaa;
+    z-index: 50;
+    text-align: center;
+  }
+
+  #settings-window p {
+    font-size: 40px;
+    margin-top: 20px;
+    color: orangered;
+  }
+  #settings-window form {
+    margin-top: 0px;
+    margin-right: 30px;
+    font-size: 16px;
+    color: #aaaaaa;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  #settings-window form input {
+    margin: 10px;
+    padding: 10px;
+    text-align: right;
+    font-size: 15px;
+    font-weight: 500;
+    width: 40px;
+  }
+  #settings-close-btn {
+    position: absolute;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    font-size: 43px;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 15px;
+    top: 10px;
+    left: 260px;
+  }
+  #settings-save-btn {
+    position: absolute;
+    top: 380px;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 1;
   }
 }
 @keyframes light-up {
@@ -967,7 +1038,6 @@
   }
 
   #settings-window {
-    display: none;
     flex-direction: column;
     align-items: left;
     position: absolute;
@@ -984,7 +1054,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     color: #aaaaaa;
-    z-index: 6;
+    z-index: 50;
     text-align: center;
   }
 
