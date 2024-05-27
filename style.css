@@ -501,6 +501,7 @@
 
   #container {
     position: absolute;
+    z-index: 1;
     top: 1vw;
     width: 98vw;
     height: 200vw;
@@ -514,6 +515,7 @@
     position: absolute;
     /* width: 900px;
   height: 260px; */
+    z-index: 1;
     width: 100%;
     height: 50vw;
     border: 1px solid black;
@@ -911,11 +913,11 @@
   }
 
   #edit-window {
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: left;
     position: absolute;
-    z-index: 500;
+    z-index: 7;
     width: 50vw;
     height: 65vw;
     background: rgb(55, 55, 55);
@@ -925,10 +927,11 @@
       rgba(0, 0, 0, 1) 100%
     );
     border-radius: 4vw;
-    top: 5%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
     color: #aaaaaa;
+    text-align: center;
   }
 
   #edit-current-date {
@@ -962,6 +965,78 @@
     top: 2vw;
     left: 39vw;
   }
+
+  #settings-window {
+    display: none;
+    flex-direction: column;
+    align-items: left;
+    position: absolute;
+    width: 50vw;
+    height: 65vw;
+    background: rgb(55, 55, 55);
+    background: linear-gradient(
+      141deg,
+      rgba(55, 55, 55, 1) 0%,
+      rgba(0, 0, 0, 1) 100%
+    );
+    border-radius: 4vw;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #aaaaaa;
+    z-index: 6;
+    text-align: center;
+  }
+
+  #settings-window p {
+    font-size: 5vw;
+    margin-bottom: 0;
+    color: orangered;
+  }
+  #settings-window form {
+    margin-top: 5vw;
+    margin-right: 5vw;
+    font-size: 2.5vw;
+    color: #aaaaaa;
+    font-weight: 500;
+    text-align: right;
+  }
+
+  #settings-window form input {
+    width: 12vw;
+    margin: 1.5vw;
+    padding: 0.5vw;
+    text-align: right;
+    font-size: 4vw;
+    font-weight: 500;
+  }
+  #settings-close-btn {
+    position: absolute;
+    cursor: pointer;
+    width: 9vw;
+    height: 9vw;
+    font-size: 8vw;
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 3vw;
+    top: 2vw;
+    left: 39vw;
+  }
+  #settings-save-btn {
+    position: absolute;
+    top: 57vw;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 1;
+  }
+
   @keyframes light-up {
     from {
       box-shadow: 0px 0px 0px rgb(218, 144, 32);

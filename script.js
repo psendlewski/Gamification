@@ -31,6 +31,7 @@ const progressBarEl = document.querySelector("#progress-bar");
 const expEl = document.querySelector(".exp");
 
 const editCloseBtnEl = document.querySelector("#edit-close-btn");
+
 // const editSaveBtn = document.querySelector("#edit-save-btn");
 let editSaveBtn;
 
@@ -123,6 +124,36 @@ let editFreeTimeEl = document.querySelector("#edit-free-time");
 let editStudyingEl = document.querySelector("#edit-studying");
 let editWindowEl = document.querySelector("#edit-window");
 let editCurrentDateEl = document.querySelector("#edit-current-date");
+
+// Settings Window
+const settingsBtnEl = document.querySelector("#settings-btn");
+
+const settingsWindowEl = document.querySelector("#settings-window");
+const settingsCloseBtnEl = document.querySelector("#settings-close-btn");
+const settingsSaveBtnEl = document.querySelector("#settings-save-btn");
+
+const settingsBalanceEl = document.querySelector("#settings-balance");
+const settingsIncomeStudyingEl = document.querySelector(
+  "#settings-income-studying"
+);
+const settingsUpgradeCostEl = document.querySelector("#settings-upgrade-cost");
+const settingsUpgradeIncomeEl = document.querySelector(
+  "#settings-upgrade-income"
+);
+
+// Settings Object
+let settingsObject;
+
+if (window.localStorage.getItem("settingsObject")) {
+  settingsObject = JSON.parse(window.localStorage.getItem("settingsObject"));
+} else {
+  settingsObject = {
+    incomePerStudyingHour: 1,
+    upgradeCost: 20,
+    passiveIncomePerLevel: 1,
+  };
+  window.localStorage.setItem("settingsObject", JSON.stringify(settingsObject));
+}
 
 loadCalendarDayDataObject();
 
@@ -1030,7 +1061,7 @@ function calcProductivityBonus() {
   // console.log("startingDay", startingDay);
   // console.log("bonusAverage", bonusAverage);
   // console.log("bonusSum", bonusSum);
-  // console.log("productivityBonus", productivityBonus); //                         ***********************
+  console.log("productivityBonus", productivityBonus); //                         ***********************
 
   // Display Bonus:
   if (productivityBonus > 0) {
@@ -1292,6 +1323,24 @@ addEditorToPastMonths();
 // Edit - Close Button
 editCloseBtnEl.addEventListener("click", () => {
   editWindowEl.style = "display: none;";
+});
+
+// Open Settings Window
+settingsBtnEl.addEventListener("click", () => {
+  settingsWindowEl.style = "display:flex";
+
+  // Display suggested values
+  settingsBalanceEl.value = 0;
+  settingsIncomeStudyingEl.value = settingsObject.incomePerStudyingHour;
+  settingsUpgradeCostEl.value = settingsObject.upgradeCost;
+  settingsUpgradeIncomeEl.value = settingsObject.passiveIncomePerLevel;
+});
+
+// Settings Save Button
+settingsS;
+// Close settings window
+settingsCloseBtnEl.addEventListener("click", () => {
+  settingsWindowEl.style = "display:none";
 });
 
 // Function calls on interval
