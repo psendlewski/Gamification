@@ -25,6 +25,9 @@ const dayNumbersEl = document.querySelector("#day-numbers");
 const incomeEl = document.querySelector("#incomeEl");
 const levelEl = document.querySelector("#level");
 
+// Overlay
+const overlayEl = document.querySelector("#overlay");
+
 // Progress bar
 const progressBgEl = document.querySelector("#progress-background");
 const progressBarEl = document.querySelector("#progress-bar");
@@ -1085,6 +1088,7 @@ function addEditorToPastDays() {
     currentDayEl.addEventListener("click", () => {
       // Display Edit window
       editWindowEl.style = "display: flex";
+      overlayEl.style = "display: block";
 
       // Get Day Number From Current Element Id and save it to external variable
       let currentDayId = String(currentDayEl.attributes.id.value);
@@ -1152,6 +1156,7 @@ function addEditorToPastDays() {
 
     // Close Window
     editWindowEl.style = "display:none;";
+    overlayEl.style = "display: none";
     buildCalendars();
     addEditorToPastDays();
     addEditorToPastMonths();
@@ -1171,6 +1176,7 @@ function addEditorToPastMonths() {
     currentMonthEl.addEventListener("click", () => {
       // Display Edit window
       editWindowEl.style = "display: flex";
+      overlayEl.style = "display: block";
 
       currentEditMonth = 0;
 
@@ -1307,6 +1313,7 @@ function addEditorToPastMonths() {
         editSaveBtn.remove();
         // Close Window
         editWindowEl.style = "display:none;";
+        overlayEl.style = "display: none";
         buildCalendars();
         addEditorToPastDays();
         addEditorToPastMonths();
@@ -1327,12 +1334,14 @@ addEditorToPastMonths();
 // Edit - Close Button
 editCloseBtnEl.addEventListener("click", () => {
   editWindowEl.style = "display: none;";
+  overlayEl.style = "display: none";
 });
 
 // Open Settings Window
 settingsBtnEl.addEventListener("click", () => {
   console.log("Settings Btn");
   settingsWindowEl.style = "display:flex";
+  overlayEl.style = "display: block";
 
   // Display suggested values
   settingsBalanceEl.value = 0;
@@ -1366,11 +1375,13 @@ settingsBtnEl.addEventListener("click", () => {
 
     // Close Settings Window
     settingsWindowEl.style = "display:none";
+    overlayEl.style = "display: none";
   });
 });
 // Close settings window
 settingsCloseBtnEl.addEventListener("click", () => {
   settingsWindowEl.style = "display:none";
+  overlayEl.style = "display: none";
 });
 
 // Function calls on interval
